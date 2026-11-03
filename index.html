@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#9b2226">
+<title>毛概选择题 · 刷题</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#f7f3ec; --surface:#ffffff; --surface-2:#fbf8f3;
+  --ink:#221d18; --ink-2:#57504a; --muted:#8d857b;
+  --line:#e9e2d7; --line-2:#ded4c6;
+  --accent:#9b2226; --accent-bg:#9b2226; --accent-fg:#fff; --accent-soft:#f9ecea;
+  --gold:#b08d57;
+  --ok:#2f7d5b; --ok-soft:#eaf4ee; --ok-line:#bfe0cd;
+  --bad:#bf3b2b; --bad-soft:#fbedeb; --bad-line:#f2c9c3;
+  --shadow:0 1px 2px rgba(40,32,24,.04),0 14px 34px -22px rgba(40,32,24,.45);
+  --radius:18px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Hiragino Sans GB","Noto Sans CJK SC",sans-serif;
+  --serif:"Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+}
+[data-theme="dark"]{
+  --bg:#141216; --surface:#1d1a20; --surface-2:#242028;
+  --ink:#f0ebe4; --ink-2:#c3bbb1; --muted:#8f877e;
+  --line:#302a34; --line-2:#3d3644;
+  --accent:#e07069; --accent-bg:#b23b36; --accent-fg:#fff; --accent-soft:#311b1c;
+  --gold:#c9a86e;
+  --ok:#6cc79a; --ok-soft:#17302a; --ok-line:#2a5241;
+  --bad:#ef8272; --bad-soft:#331d1c; --bad-line:#5c2f2a;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 16px 36px -20px rgba(0,0,0,.9);
+}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+  font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  transition:background .25s,color .25s;
+}
+body::before{
+  content:"";position:fixed;inset:0 0 auto 0;height:320px;pointer-events:none;z-index:0;
+  background:radial-gradient(120% 100% at 50% 0%,rgba(155,34,38,.075),transparent 72%);
+}
+[data-theme="dark"] body::before{background:radial-gradient(120% 100% at 50% 0%,rgba(224,112,105,.09),transparent 72%)}
+button{font-family:inherit}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 18px calc(64px + env(safe-area-inset-bottom))}
+
+/* ---------- top bar ---------- */
+.top{display:flex;align-items:center;gap:10px;padding:18px 0 6px;min-height:56px}
+.top-mid{flex:1;min-width:0;text-align:center}
+.top-title{font-size:16px;font-weight:600;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-sub{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:.06em;font-size:15px}
+.brand-mark{
+  width:28px;height:28px;border-radius:9px;background:var(--accent-bg);color:var(--accent-fg);
+  display:grid;place-items:center;font-size:14px;font-family:var(--serif);font-weight:700;
+  box-shadow:0 3px 10px -4px rgba(155,34,38,.8);
+}
+.icon-btn{
+  width:38px;height:38px;flex:0 0 38px;border-radius:12px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-2);font-size:17px;cursor:pointer;
+  display:grid;place-items:center;transition:.18s;line-height:1;
+}
+.icon-btn:hover{border-color:var(--line-2);color:var(--ink);transform:translateY(-1px)}
+.icon-btn:active{transform:scale(.9);transition-duration:.1s}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.active{display:block;animation:fade .26s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- home ---------- */
+.hero{padding:30px 0 4px;text-align:center}
+.eyebrow{font-size:11.5px;letter-spacing:.36em;color:var(--gold);font-weight:600;text-transform:uppercase}
+.hero h1{
+  font-family:var(--serif);font-size:clamp(30px,6vw,42px);margin:12px 0 10px;
+  letter-spacing:.06em;font-weight:700;line-height:1.25;
+}
+.hero .sub{color:var(--muted);font-size:13.5px;margin:0;font-variant-numeric:tabular-nums}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);margin:26px 0 0;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.stats>div{padding:16px 12px;text-align:center;border-right:1px solid var(--line)}
+.stats>div:last-child{border-right:0}
+.stats b{display:block;font-size:22px;font-weight:700;letter-spacing:.02em;font-variant-numeric:tabular-nums;line-height:1.3}
+.stats span{font-size:12px;color:var(--muted);letter-spacing:.06em}
+.stats .pbar{grid-column:1/-1;border-top:1px solid var(--line);padding:0;height:4px;border-right:0}
+.stats .pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#c25b4f);border-radius:0 4px 4px 0;transition:width .5s}
+
+.resume{
+  display:flex;align-items:center;gap:14px;margin-top:16px;padding:14px 16px;border-radius:14px;
+  background:var(--accent-soft);border:1px solid rgba(155,34,38,.22);animation:fade .3s both;
+}
+[data-theme="dark"] .resume{border-color:rgba(224,112,105,.28)}
+.resume .rt{flex:1;min-width:0}
+.resume .rt b{display:block;font-size:14px;color:var(--ink)}
+.resume .rt span{font-size:12.5px;color:var(--muted)}
+.resume .btn{flex:0 0 auto}
+
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0 0}
+.mode{
+  position:relative;overflow:hidden;text-align:left;padding:22px 20px;border-radius:var(--radius);
+  border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--ink);
+  box-shadow:var(--shadow);transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.mode:hover{transform:translateY(-3px);border-color:rgba(155,34,38,.45);box-shadow:0 18px 34px -22px rgba(40,32,24,.5)}
+.mode .ico{
+  width:42px;height:42px;border-radius:13px;display:grid;place-items:center;margin-bottom:14px;
+  background:var(--accent-soft);color:var(--accent);
+}
+.mode h3{margin:0 0 6px;font-size:17.5px;letter-spacing:.02em}
+.mode p{margin:0;font-size:12.8px;color:var(--muted);line-height:1.6}
+.mode .arrow{position:absolute;right:18px;bottom:18px;color:var(--accent);opacity:.7;font-size:15px}
+.mode::after{
+  content:"";position:absolute;right:-40px;top:-40px;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(155,34,38,.10),transparent 70%);
+}
+[data-theme="dark"] .mode::after{background:radial-gradient(circle,rgba(224,112,105,.14),transparent 70%)}
+
+.settings{
+  margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:8px 18px;box-shadow:var(--shadow);
+}
+.set-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap}
+.set-row:last-child{border-bottom:0}
+.set-label{flex:0 0 84px;font-size:13px;color:var(--muted);letter-spacing:.04em}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{
+  padding:6px 13px;border-radius:999px;border:1px solid var(--line);background:transparent;
+  font-size:12.5px;color:var(--ink-2);cursor:pointer;transition:.16s;line-height:1.5;
+}
+.chip:hover{border-color:var(--line-2);background:var(--surface-2)}
+.chip:active{transform:scale(.94);transition-duration:.08s}
+.chip.on{background:var(--accent-bg);border-color:var(--accent-bg);color:var(--accent-fg);font-weight:600}
+
+.quick{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.qbtn{
+  flex:1 1 0;min-width:120px;display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:12px;border-radius:13px;border:1px solid var(--line);background:var(--surface);
+  font-size:13.5px;color:var(--ink-2);cursor:pointer;transition:.16s;box-shadow:var(--shadow);
+}
+.qbtn:hover{border-color:var(--line-2);color:var(--ink);transform:translateY(-1px)}
+.qbtn em{font-style:normal;font-size:11.5px;background:var(--accent-soft);color:var(--accent);padding:1px 7px;border-radius:999px;font-weight:600;font-variant-numeric:tabular-nums}
+.foot{text-align:center;font-size:11.5px;color:var(--muted);margin:26px 0 0;letter-spacing:.02em}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 20px;border-radius:12px;border:1px solid var(--line);background:var(--surface);
+  color:var(--ink);font-size:14px;font-weight:500;cursor:pointer;transition:.18s;
+  min-height:44px;letter-spacing:.02em;
+}
+.btn:hover{border-color:var(--line-2);transform:translateY(-1px)}
+.btn:active{transform:scale(.96);transition-duration:.12s}
+.btn{transition:transform .22s cubic-bezier(.34,1.4,.64,1),border-color .18s,background .18s,filter .18s}
+.btn.primary{background:var(--accent-bg);border-color:var(--accent-bg);color:var(--accent-fg);box-shadow:0 6px 16px -8px rgba(155,34,38,.9)}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.sm{padding:8px 14px;min-height:36px;font-size:13px;border-radius:10px}
+.link{background:none;border:0;color:var(--accent);font-size:12.5px;cursor:pointer;padding:4px 6px;text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- chapter list ---------- */
+.chlist{display:grid;gap:12px;margin-top:14px}
+.chcard{
+  display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:var(--radius);
+  background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);cursor:pointer;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+}
+.chcard:hover{transform:translateY(-2px);border-color:rgba(155,34,38,.4);box-shadow:0 18px 34px -24px rgba(40,32,24,.5)}
+.ch-left{flex:1;min-width:0}
+.ch-name{font-size:17px;font-weight:700;letter-spacing:.04em;font-family:var(--serif);margin-bottom:3px}
+.ch-meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ch-prog{height:4px;background:var(--line);border-radius:4px;margin:10px 0 6px;overflow:hidden;max-width:260px}
+.ch-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#c25b4f);border-radius:4px;transition:width .6s cubic-bezier(.22,.9,.3,1)}
+.ch-hint{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ch-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:0 0 auto}
+.mini{
+  padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);
+  font-size:11.5px;color:var(--ink-2);cursor:pointer;transition:.15s;white-space:nowrap;
+}
+.mini:hover{border-color:var(--accent);color:var(--accent)}
+.mini.hot{background:var(--bad-soft);border-color:var(--bad-line);color:var(--bad)}
+.go{font-size:13px;color:var(--accent);font-weight:600;letter-spacing:.04em;white-space:nowrap}
+
+/* ---------- quiz ---------- */
+.qbar{height:5px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0 0}
+.qbar i{display:block;height:100%;min-width:5px;background:linear-gradient(90deg,var(--accent),#c25b4f);border-radius:99px;transition:width .3s ease}
+.qcard{
+  touch-action:pan-y;
+  position:relative;
+  margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:20px;
+  padding:26px 26px 22px;box-shadow:var(--shadow);
+}
+.qmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tagnum{
+  font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);
+  padding:3px 9px;border-radius:7px;letter-spacing:.04em;font-variant-numeric:tabular-nums;
+}
+.tag{
+  font-size:11.5px;padding:3px 9px;border-radius:7px;border:1px solid var(--line);
+  color:var(--ink-2);background:var(--surface-2);letter-spacing:.04em;white-space:nowrap;
+}
+.tag.single{color:#1f5fa8;border-color:#cfe0f2;background:#eef5fc}
+.tag.multi{color:#8a5a12;border-color:#f0dfc0;background:#fdf5e7}
+[data-theme="dark"] .tag.single{color:#8ec0f5;border-color:#26425e;background:#182636}
+[data-theme="dark"] .tag.multi{color:#e2bd7b;border-color:#4d3d22;background:#2a2216}
+.star{
+  margin-left:auto;background:none;border:0;font-size:19px;line-height:1;color:var(--muted);
+  cursor:pointer;padding:2px 4px;transition:transform .15s,color .15s;
+}
+.star:hover{transform:scale(1.15)}
+.star.on{color:var(--gold)}
+.qstem{
+  font-size:16.5px;line-height:1.92;letter-spacing:.012em;margin:0 0 18px;
+  color:var(--ink);white-space:pre-wrap;word-break:break-word;
+}
+.qstem em{font-style:normal;color:var(--accent);font-weight:600}
+.opts{display:grid;gap:10px}
+.opt{
+  display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+  padding:13px 15px;border-radius:13px;border:1px solid var(--line);background:var(--surface);
+  color:var(--ink);font-size:14.5px;line-height:1.75;cursor:pointer;transition:.16s;
+}
+.opt:hover:not(:disabled){border-color:var(--line-2);background:var(--surface-2);transform:translateX(2px)}
+.opt:active:not(:disabled){transform:scale(.99);transition-duration:.08s}
+.opt:disabled{cursor:default}
+.opt-key{
+  flex:0 0 25px;height:25px;margin-top:2px;border-radius:8px;background:#f0ebe2;color:#6d6459;
+  display:grid;place-items:center;font-size:12.5px;font-weight:700;letter-spacing:.02em;transition:.16s;
+}
+[data-theme="dark"] .opt-key{background:#2c2731;color:#b3a99d}
+.opt-text{flex:1;min-width:0;word-break:break-word}
+.mk{flex:0 0 auto;font-size:15px;font-weight:700;margin-top:2px}
+.mk-ok{color:var(--ok)}
+.mk-bad{color:var(--bad)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt.sel .opt-key{background:var(--accent-bg);color:var(--accent-fg)}
+.opt.correct{border-color:var(--ok-line);background:var(--ok-soft)}
+.opt.correct .opt-key{background:var(--ok);color:#fff}
+[data-theme="dark"] .opt.correct .opt-key{color:#0e1a15}
+.opt.wrong{border-color:var(--bad-line);background:var(--bad-soft)}
+.opt.wrong .opt-key{background:var(--bad);color:#fff}
+[data-theme="dark"] .opt.wrong .opt-key{color:#1b0f0c}
+.opt.dim{opacity:.5}
+
+.fb{
+  display:flex;gap:12px;margin-top:18px;padding:15px 17px;border-radius:14px;
+  border:1px solid var(--line);animation:pop .22s ease both;
+}
+@keyframes pop{from{opacity:0;transform:translateY(4px) scale(.99)}to{opacity:1;transform:none}}
+.fb.ok{background:var(--ok-soft);border-color:var(--ok-line)}
+.fb.bad{background:var(--bad-soft);border-color:var(--bad-line)}
+.fb-icon{
+  flex:0 0 24px;height:24px;border-radius:50%;display:grid;place-items:center;
+  font-size:13px;font-weight:800;color:#fff;background:var(--ok);margin-top:1px;
+}
+.fb.bad .fb-icon{background:var(--bad)}
+.fb-body{flex:1;min-width:0}
+.fb-title{font-size:14.5px;font-weight:700;margin-bottom:4px}
+.fb.ok .fb-title{color:var(--ok)}
+.fb.bad .fb-title{color:var(--bad)}
+.fb-line{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.ansbox{
+  display:inline-block;font-weight:700;letter-spacing:.16em;color:var(--ok);
+  background:rgba(47,125,91,.10);padding:1px 8px;border-radius:6px;margin:0 4px;
+}
+.fb.bad .ansbox{color:var(--ok);background:rgba(47,125,91,.12)}
+.your{margin-left:8px;color:var(--muted)}
+.qa{display:flex;gap:10px;margin-top:20px;align-items:center}
+.qa .spacer{flex:1}
+.qa .btn{white-space:nowrap}
+.hint{font-size:11.5px;color:var(--muted);text-align:center;margin:16px 0 0;letter-spacing:.02em}
+.hint kbd{
+  font-family:ui-monospace,Consolas,monospace;font-size:10.5px;padding:1px 5px;border-radius:4px;
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);margin:0 1px;
+}
+.hint-inline{font-size:12px;color:var(--muted);letter-spacing:.03em;margin-right:14px}
+.kbdhint{display:inline}
+@media (hover:none){.kbdhint{display:none}.hint-inline{margin-right:0}}
+@media(max-width:560px){.kbdhint{display:none}}
+
+/* ---------- modal / palette ---------- */
+.modal{position:fixed;inset:0;display:none;z-index:80;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.veil{position:absolute;inset:0;background:rgba(24,18,14,.45);backdrop-filter:blur(3px);animation:fade .2s both}
+.sheet{
+  position:relative;background:var(--surface);border-radius:20px;padding:20px;
+  width:min(580px,100%);max-height:82vh;display:flex;flex-direction:column;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.5);animation:pop .2s both;border:1px solid var(--line);
+}
+.sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sheet-head h3{margin:0;font-size:15.5px;flex:1;letter-spacing:.03em}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-bottom:12px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:7px;overflow:auto;padding:2px}
+.pcell{
+  aspect-ratio:1/1;border-radius:9px;border:1px solid var(--line);background:var(--surface-2);
+  font-size:12.5px;color:var(--ink-2);cursor:pointer;transition:.14s;font-variant-numeric:tabular-nums;
+}
+.pcell:hover{transform:translateY(-1px);border-color:var(--line-2)}
+.pcell.ok{background:var(--ok-soft);border-color:var(--ok-line);color:var(--ok);font-weight:600}
+.pcell.bad{background:var(--bad-soft);border-color:var(--bad-line);color:var(--bad);font-weight:600}
+.pcell.cur{outline:2px solid var(--accent);outline-offset:1px}
+
+/* ---------- result ---------- */
+.scorecard{
+  display:flex;align-items:center;gap:26px;margin-top:16px;padding:24px;
+  background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);
+}
+.ringwrap{position:relative;flex:0 0 140px;width:140px;height:140px}
+.ringtext{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ringtext b{font-size:38px;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ringtext span{font-size:12px;color:var(--muted);margin-top:4px}
+.scorestats{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:14px 10px}
+.scorestats>div b{display:block;font-size:20px;font-variant-numeric:tabular-nums;line-height:1.3}
+.scorestats>div span{font-size:12px;color:var(--muted)}
+.card{
+  margin-top:14px;padding:20px 22px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);
+}
+.card-t{margin:0 0 14px;font-size:14.5px;letter-spacing:.04em;color:var(--ink)}
+.chrow{display:flex;align-items:center;gap:12px;margin-bottom:11px}
+.chrow:last-child{margin-bottom:0}
+.chrow .cn{flex:0 0 178px;font-size:12.5px;color:var(--ink-2);line-height:1.45}
+.chrow .cb{flex:1;height:6px;background:var(--line);border-radius:6px;overflow:hidden}
+.chrow .cb i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--ok),#5fae86);transition:width .6s cubic-bezier(.22,.9,.3,1)}
+.chrow .cs{flex:0 0 auto;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+.list-item{
+  padding:13px 0;border-bottom:1px dashed var(--line);cursor:pointer;
+}
+.list-item:last-child{border-bottom:0}
+.list-item .li-top{display:flex;align-items:center;gap:7px;margin-bottom:4px;flex-wrap:wrap}
+.list-item .li-stem{font-size:13.5px;color:var(--ink-2);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.list-item.open .li-stem{-webkit-line-clamp:unset;overflow:visible}
+.list-item .li-ans{font-size:12px;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
+.list-item .li-ans b{color:var(--ok);letter-spacing:.12em}
+.pv-opts{margin-top:10px;display:grid;gap:6px;animation:fade .2s both}
+.pv-opts[hidden]{display:none}
+.pv-opt{display:flex;gap:9px;font-size:13px;line-height:1.65;padding:8px 11px;border-radius:9px;border:1px solid var(--line);color:var(--ink-2)}
+.pv-opt.ok{border-color:var(--ok-line);background:var(--ok-soft);color:var(--ink)}
+.pv-opt .k{font-weight:700;flex:0 0 14px;color:var(--muted)}
+.pv-opt.ok .k{color:var(--ok)}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:40px 10px}
+.empty .big{font-size:34px;display:block;margin-bottom:10px;opacity:.5}
+
+/* ---------- toast ---------- */
+.toast{
+  position:fixed;left:50%;bottom:34px;transform:translate(-50%,14px);z-index:120;
+  background:rgba(28,22,18,.92);color:#fff;padding:10px 20px;border-radius:999px;font-size:13px;
+  opacity:0;pointer-events:none;transition:.24s;backdrop-filter:blur(6px);white-space:nowrap;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- responsive ---------- */
+@media(max-width:720px){
+  .modes{grid-template-columns:1fr}
+  .hero{padding-top:18px}
+  .qcard{padding:20px 18px 18px;border-radius:17px}
+  .qstem{font-size:15.8px;line-height:1.88}
+  .scorecard{flex-direction:column;gap:18px;text-align:center}
+  .scorestats{width:100%;text-align:center}
+  .stats b{font-size:19px}
+  .chcard{padding:15px 16px;gap:10px}
+  .ch-name{font-size:16px}
+  .set-label{flex-basis:100%;margin-bottom:-4px}
+  .qa{flex-wrap:wrap}
+  .qa .btn{flex:1}
+  .top{padding-top:12px}
+}
+@media(max-width:560px){
+  .qa.wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .qa.wrap .spacer{display:none}
+  .qa.wrap .btn{width:100%;min-width:0}
+  .qa.wrap .btn.primary{grid-column:1 / -1;order:-1}
+}
+@media(max-width:420px){
+  .stats{grid-template-columns:1fr 1fr 1fr}
+  .stats b{font-size:17px}
+  .opt{font-size:14px;padding:12px 13px}
+  .wrap{padding-left:14px;padding-right:14px}
+}
+
+/* ---------- 精致交互（完成反馈 / 描边对勾 / 粒子 / 抖动） ---------- */
+.fb-icon svg{display:block}
+.fb-icon path{stroke-dasharray:26;stroke-dashoffset:26}
+.fb.celebrate .fb-icon path{animation:drawck .38s .06s ease-out forwards}
+@keyframes drawck{to{stroke-dashoffset:0}}
+.fb.shake-it{animation:shk .32s ease both}
+@keyframes shk{0%,100%{transform:translateX(0)}22%{transform:translateX(-5px)}45%{transform:translateX(4px)}68%{transform:translateX(-3px)}86%{transform:translateX(2px)}}
+.burst-dot{position:absolute;border-radius:50%;pointer-events:none;z-index:5}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+}
+
+/* ---------- 滚动收口 ---------- */
+body{overscroll-behavior:none}
+/* ---------- 做题屏：先按实测可视高度自适应，再锁定不滚动 ---------- */
+body.quiz-lock{overflow:hidden}
+body.quiz-lock #screen-quiz.active{display:flex;flex-direction:column;box-sizing:border-box;height:100dvh;height:calc(var(--vh,1vh)*100);padding-bottom:14px}
+body.quiz-lock .qwrap{flex:1;min-height:0;width:100%;display:flex;flex-direction:column}
+body.quiz-lock #quizBody{flex:1;min-height:0;position:relative}
+body.quiz-lock .qcard{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+body.quiz-lock .qcard{padding-bottom:0}
+body.quiz-lock .qa{position:sticky;bottom:0;background:var(--surface);padding:12px 0 14px;margin-top:16px;border-top:1px solid var(--line)}
+body.quiz-lock .qa::before{content:"";position:absolute;left:0;right:0;top:-17px;height:16px;background:linear-gradient(to bottom,rgba(255,255,255,0),var(--surface));pointer-events:none}
+
+/* ---------- 做题页顶部压缩：功能全保留，只省纵向空间 ---------- */
+#screen-quiz .top{padding:8px 0 2px;min-height:0;gap:8px}
+#screen-quiz .top-mid{display:flex;align-items:baseline;justify-content:center;gap:8px}
+#screen-quiz .top-title{font-size:15.5px}
+#screen-quiz .icon-btn{width:34px;height:34px;flex:0 0 34px;border-radius:10px;font-size:15px}
+#screen-quiz .qbar{height:4px;margin-top:8px}
+#screen-quiz .qcard{margin-top:10px}
+
+/* ---------- 题目卡标签行压缩为单行 ---------- */
+.qcard .qmeta{flex-wrap:nowrap;gap:6px;margin-bottom:12px}
+.qcard .qmeta .tagnum,.qcard .qmeta .tag{flex:0 0 auto}
+.qcard .qmeta .tag.qch{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.qcard .qmeta .star{flex:0 0 auto;margin-left:0}
+
+/* ---------- 主页分段开关 ---------- */
+.seg{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px;margin:18px 0 2px}
+.seg button{flex:1;padding:9px 0;border:0;border-radius:999px;background:transparent;font:inherit;font-size:14.5px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:all .18s}
+.seg button.on{background:var(--accent);color:#fff;box-shadow:0 4px 12px -6px rgba(155,34,38,.7)}
+.seg button:active{transform:scale(.97)}
+/* ---------- 主观题 ---------- */
+#screen-subj .top{padding:8px 0 2px;min-height:0;gap:8px}
+#screen-subj .top-mid{display:flex;align-items:baseline;justify-content:center;gap:8px}
+#screen-subj .top-title{font-size:15.5px}
+#screen-subj .icon-btn{width:34px;height:34px;flex:0 0 34px;border-radius:10px;font-size:15px}
+#screen-subj .qbar{height:4px;margin-top:8px}
+#screen-subj .qcard{margin-top:10px}
+body.quiz-lock #screen-subj.active{display:flex;flex-direction:column;box-sizing:border-box;height:100dvh;height:calc(var(--vh,1vh)*100);padding-bottom:14px}
+body.quiz-lock #subjBody{flex:1;min-height:0;position:relative}
+.sj-points{display:grid;gap:10px;margin-top:2px}
+.sj-point{display:flex;gap:10px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 13px;font-size:15px;line-height:1.85;color:var(--ink);animation:fadeUp .32s ease both}
+.sj-point .no{flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;margin-top:3px}
+.sj-point.plain{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pcell.seen{background:var(--accent);border-color:var(--accent);color:#fff}
+</style>
+<script>
+window.__errs = [];
+function __showErr(){
+  var b = document.getElementById("errbar");
+  if(!b || !window.__errs.length) return;
+  b.style.display = "block";
+  b.textContent = "诊断信息：" + window.__errs.join(" ｜ ");
+}
+window.addEventListener("error", function(e){
+  window.__errs.push("错误：" + (e.message || "未知") + "（行 " + (e.lineno || "?") + "）");
+  __showErr();
+});
+window.addEventListener("unhandledrejection", function(e){
+  window.__errs.push("异步错误：" + ((e.reason && e.reason.message) || e.reason || "未知"));
+  __showErr();
+});
+document.addEventListener("DOMContentLoaded", __showErr);
+</script>
+</head>
+<body>
+<div id="errbar" style="display:none;position:fixed;left:8px;right:8px;bottom:8px;z-index:9999;background:#b3261e;color:#fff;font-size:12px;line-height:1.5;padding:8px 10px;border-radius:8px;word-break:break-all"></div>
+<div class="wrap">
+
+  <!-- ============ HOME ============ -->
+  <section class="screen active" id="screen-home">
+    <div class="top">
+      <div class="brand"><span class="brand-mark">毛</span>毛概刷题</div>
+      <div style="flex:1"></div>
+      <button class="icon-btn" data-theme-toggle title="切换主题">☾</button>
+    </div>
+
+    <div class="hero">
+      <div class="eyebrow">毛泽东思想和中国特色社会主义理论体系概论</div>
+      <h1 id="heroTitle">选择题刷题</h1>
+      <p class="sub" id="heroMeta"></p>
+    </div>
+
+    <div class="seg" id="kindSeg">
+      <button data-kind="choice" class="on">选择题</button>
+      <button data-kind="subj">主观题</button>
+    </div>
+
+    <div class="stats">
+      <div><b id="statSeen">0</b><span>已练题目</span></div>
+      <div><b id="statAcc">—</b><span>总正确率</span></div>
+      <div><b id="statProg">0%</b><span>覆盖进度</span></div>
+      <div class="pbar"><i id="statBar" style="width:0"></i></div>
+    </div>
+
+    <div id="resumeBox"></div>
+
+    <div class="modes">
+      <button class="mode" id="modeChapter">
+        <div class="ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3 3 7.5l9 4.5 9-4.5L12 3Z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></svg>
+        </div>
+        <h3>按章节刷题</h3>
+        <p>八个章节独立练习<br>逐章攻克，进度单独统计</p>
+        <span class="arrow">→</span>
+      </button>
+      <button class="mode" id="modeMixed">
+        <div class="ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></svg>
+        </div>
+        <h3>混合刷题</h3>
+        <p>全题库随机抽取<br>打乱顺序，模拟综合测试</p>
+        <span class="arrow">→</span>
+      </button>
+    </div>
+
+    <div class="modes" style="margin-top:14px">
+      <button class="mode" id="modeMemo" style="grid-column:1/-1">
+        <div class="ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5.5C4.5 4 8 4 12 6.5c4-2.5 7.5-2.5 10-1v13c-2.5-1.5-6-1.5-10 1-4-2.5-7.5-2.5-10-1v-13Z"/><path d="M12 6.5v13"/></svg>
+        </div>
+        <h3>背题模式</h3>
+        <p>直接显示正确答案，只看不做<br>按上方题型设置筛选，逐题翻看背诵</p>
+        <span class="arrow">→</span>
+      </button>
+    </div>
+
+    <div class="settings" id="settings">
+      <div class="set-row">
+        <span class="set-label">题型</span>
+        <div class="chips">
+          <button class="chip" data-k="type" data-v="all">全部</button>
+          <button class="chip" data-k="type" data-v="single">仅单选</button>
+          <button class="chip" data-k="type" data-v="multi">仅多选</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <span class="set-label">题目顺序</span>
+        <div class="chips">
+          <button class="chip" data-k="order" data-v="seq">题号顺序</button>
+          <button class="chip" data-k="order" data-v="shuffle">随机打乱</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <span class="set-label">每组题量</span>
+        <div class="chips">
+          <button class="chip" data-k="limit" data-v="0">全部</button>
+          <button class="chip" data-k="limit" data-v="10">10 题</button>
+          <button class="chip" data-k="limit" data-v="20">20 题</button>
+          <button class="chip" data-k="limit" data-v="30">30 题</button>
+          <button class="chip" data-k="limit" data-v="50">50 题</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <span class="set-label">选项顺序</span>
+        <div class="chips">
+          <button class="chip" data-k="optorder" data-v="orig">原始顺序</button>
+          <button class="chip" data-k="optorder" data-v="shuffle">打乱选项</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <span class="set-label">单选判分</span>
+        <div class="chips">
+          <button class="chip" data-k="auto" data-v="1">点选即判</button>
+          <button class="chip" data-k="auto" data-v="0">手动提交</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick">
+      <button class="qbtn" id="goWrong">错题本 <em id="nWrong">0</em></button>
+      <button class="qbtn" id="goFav">收藏夹 <em id="nFav">0</em></button>
+      <button class="qbtn" id="resetAll">重置记录</button>
+    </div>
+
+    
+    <div id="subjHome" style="display:none">
+      <div class="stats">
+        <div><b id="sjSeenN">0</b><span>已看答案</span></div>
+        <div><b>14</b><span>主观题总数</span></div>
+        <div><b id="sjProgN">0%</b><span>背诵进度</span></div>
+        <div class="pbar"><i id="sjBar" style="width:0"></i></div>
+      </div>
+      <div class="modes">
+        <button class="mode" id="sjPaperA">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20"/></svg></div>
+          <h3>A 卷背诵</h3>
+          <p id="sjSubA">共 7 题 · 顺序背诵</p>
+          <span class="arrow">→</span>
+        </button>
+        <button class="mode" id="sjPaperB">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20"/></svg></div>
+          <h3>B 卷背诵</h3>
+          <p id="sjSubB">共 7 题 · 顺序背诵</p>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+      <div class="modes" style="margin-top:14px">
+        <button class="mode" id="sjRandom" style="grid-column:1/-1">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></svg></div>
+          <h3>随机抽背</h3>
+          <p>A、B 两卷共 14 题随机打乱，模拟抽问</p>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+      <p class="hint">先在心里默答，再点开参考答案对照 · 支持左右滑动翻题</p>
+    </div>
+
+    <p class="foot" id="footNote">题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D6</p>
+  </section>
+
+  <!-- ============ CHAPTERS ============ -->
+  <section class="screen" id="screen-chapters">
+    <div class="top">
+      <button class="icon-btn" id="chBack">←</button>
+      <div class="top-mid">
+        <div class="top-title">按章节刷题</div>
+        <div class="top-sub" id="chSub"></div>
+      </div>
+      <button class="icon-btn" data-theme-toggle title="切换主题">☾</button>
+    </div>
+    <div class="chlist" id="chapterList"></div>
+    <p class="hint">点击章节开始练习 · 章节右侧可只做该章错题</p>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="screen" id="screen-quiz">
+    <div class="top">
+      <button class="icon-btn" id="qzBack" title="返回">←</button>
+      <div class="top-mid">
+        <div class="top-title" id="qzLabel">练习</div>
+        <div class="top-sub"><span id="qzProgress">1 / 1</span> · <span id="qTimer">00:00</span></div>
+      </div>
+      <button class="icon-btn" id="qzPalette" title="答题卡">☰</button>
+    </div>
+    <div class="qbar"><i id="qbarFill" style="width:0"></i></div>
+    <div id="quizBody"></div>
+  </section>
+
+
+  <!-- ============ SUBJECTIVE ============ -->
+  <section class="screen" id="screen-subj">
+    <div class="top">
+      <button class="icon-btn" id="sjBack" title="返回">←</button>
+      <div class="top-mid">
+        <div class="top-title" id="sjLabel">A 卷背诵</div>
+        <div class="top-sub"><span id="sjProgress">1 / 7</span></div>
+      </div>
+      <button class="icon-btn" id="sjPalBtn" title="答题卡">☰</button>
+    </div>
+    <div class="qbar"><i id="sjBarFill" style="width:0"></i></div>
+    <div id="subjBody"></div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section class="screen" id="screen-result">
+    <div class="top">
+      <button class="icon-btn" id="rsHome">←</button>
+      <div class="top-mid">
+        <div class="top-title">练习报告</div>
+        <div class="top-sub" id="rsSub"></div>
+      </div>
+      <div style="width:38px"></div>
+    </div>
+    <div id="resultBody"></div>
+  </section>
+
+  <!-- ============ WRONG BOOK ============ -->
+  <section class="screen" id="screen-wrong">
+    <div class="top">
+      <button class="icon-btn" id="wbBack">←</button>
+      <div class="top-mid">
+        <div class="top-title">错题本</div>
+        <div class="top-sub" id="wbSub"></div>
+      </div>
+      <div style="width:38px"></div>
+    </div>
+    <div id="wrongBody"></div>
+  </section>
+
+  <!-- ============ FAVORITES ============ -->
+  <section class="screen" id="screen-fav">
+    <div class="top">
+      <button class="icon-btn" id="fvBack">←</button>
+      <div class="top-mid">
+        <div class="top-title">收藏夹</div>
+        <div class="top-sub" id="fvSub"></div>
+      </div>
+      <div style="width:38px"></div>
+    </div>
+    <div id="favBody"></div>
+  </section>
+
+</div>
+
+<div class="modal" id="palette">
+  <div class="veil" data-close="1"></div>
+  <div class="sheet">
+    <div class="sheet-head">
+      <h3>答题卡</h3>
+      <button class="icon-btn" data-close="1" style="width:32px;height:32px;flex-basis:32px;font-size:15px">✕</button>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--ok-soft);border:1px solid var(--ok-line)"></i>答对</span>
+      <span><i style="background:var(--bad-soft);border:1px solid var(--bad-line)"></i>答错</span>
+      <span><i style="background:var(--surface-2);border:1px solid var(--line)"></i>未答</span>
+      <span><i style="background:transparent;border:2px solid var(--accent)"></i>当前</span>
+    </div>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
+</div>
+
+
+<div class="modal" id="sjPalette">
+  <div class="veil" data-sjclose="1"></div>
+  <div class="sheet">
+    <div class="sheet-head">
+      <h3>答题卡</h3>
+      <button class="icon-btn" data-sjclose="1" style="width:32px;height:32px;flex-basis:32px;font-size:15px">✕</button>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--accent);border:1px solid var(--accent)"></i>已看答案</span>
+      <span><i style="background:var(--surface-2);border:1px solid var(--line)"></i>未看</span>
+      <span><i style="background:transparent;border:2px solid var(--accent)"></i>当前</span>
+    </div>
+    <div class="pgrid" id="sjGrid"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ================= 数据 ================= */
+const DATA = [{"id":"1","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想形成和发展的时代背景是()","options":["中国沦为半殖民地半封建社会","战争与革命成为时代主题","第一次世界大战的爆发","中国工人阶级的成长壮大"],"answer":"B"},{"id":"2","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"1917年()的胜利开辟了世界无产阶级社会主义革命的新时代，也给中国送来了马克思列宁主义....","options":["俄国十月革命","五四运动","中国共产党建立","中华人民共和国建立"],"answer":"A"},{"id":"3","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想形成和发展的实践基础是:()","options":["中国共产党领导人民进行革命和建设的成功实践","中国共产党领导的工人运动","中国共产党领导的农民运动","中国共产党领导的学生运动"],"answer":"A"},{"id":"4","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"中国共产党提出新民主主义革命的基本思想是在:()","options":["国民革命战争时期","土地革命战争时期","抗日战争时期","解放战争时期"],"answer":"A"},{"id":"5","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"以毛泽东为代表的中国共产党人初步开辟了农村包围城市、武装夺取政权革命道路是在:()","options":["国民革命战争时期","土地革命战争时期","抗日战争时期","解放战争时期"],"answer":"B"},{"id":"6","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想得到系统总结和多方面展开而趋于成熟是在:()","options":["国民革命战争时期","土地革命战争时期","抗日战争时期","解放战争时期"],"answer":"C"},{"id":"7","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"()把毛泽东思想确立为党必须长期坚持的指导思想并写入党章。","options":["遵义会议","党的六届六中全会","党的七大","党的七届二中全会"],"answer":"C"},{"id":"8","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"中国的武装斗争是无产阶级领导下的以()为主体的革命战争:","options":["工人","农民","城市小资产阶级","知识分子"],"answer":"B"},{"id":"9","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"()指出:\"全党已经空前一致地认识了毛泽东同志的路线的正确性,空前自觉地团结在毛泽东的旗帜下了。\"","options":["《九月来信》","《关于若干历史问题的决议》","《中国共产党党章》","《论人民民主专政》"],"answer":"B"},{"id":"10","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"经济工作和其他一切工作的生命线是:()","options":["思想政治工作","组织建设工作","作风建设工作","军队建设工作"],"answer":"A"},{"id":"11","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"中国共产党历史上,第一次使用\"毛泽东思想的活的灵魂\"的表述是在:()","options":["《反对本本主义》","《关于若干历史问题的决议》","《关于修改党章的报告》","《关于建国以来党的若干历史问题的决议》"],"answer":"D"},{"id":"12","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"()开始形成以毛泽东同志为核心的党的第一代中央领导集体。","options":["遵义会议","第一次政治协商会议","中共七大","新中国成立"],"answer":"A"},{"id":"13","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想的精髓是:()","options":["实事求是","群众路线","独立自主","艰苦奋斗"],"answer":"A"},{"id":"14","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"中国共产党的根本工作路线是:()","options":["实事求是","群众路线","独立自主","自力更生"],"answer":"B"},{"id":"15","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"(),创造性地将支部建在连上,成立各级士兵委员会,实行民主制度,在政治上官兵平等。","options":["南昌起义","秋收起义","三湾改编","古田会议"],"answer":"C"},{"id":"16","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"\"人民,只有人民,才是创造世界历史的动力。这句话表达毛泽东思想活的灵魂是()","options":["统一战线","实事求是","群众路线","独立自主"],"answer":"C"},{"id":"17","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东在《反对本本主义》一文中就指出:\"中国革命斗争的胜利要靠中国同志了解中国情况。\"这句活的意思是()","options":["加强学习马克思主义理论","保持与共产国际的联系","坚持独立自主原则","必须走群众路线"],"answer":"C"},{"id":"18","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"马克思主义中国化时代化第一次历史性飞跃的理论成果是:()","options":["毛泽东思想","邓小平理论","科学发展观","习近平新时代中国特色社会主义思想"],"answer":"A"},{"id":"19","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"黄炎培说:我生六十多年,耳闻的不说,所亲眼看到的,真所谓\"其兴也淳焉\"\"其亡也忽焉\",一人一家,一团体,一地方,乃至一国,不少单位都没有能跳出这周期率的支配力。毛泽东说:我们已经找至新路,我们能跳出这周期率。这条新路,就是()","options":["革命","民主","统一战线","党的领导"],"answer":"B"},{"id":"20","type":"single","chapter":"第一章 毛泽东思想及其历史地位","stem":"已经包含了毛泽东思想的活的灵魂的实事求是、群众路线、独立自主三个方面的基本因子的著作是:()","options":["《星星之火,可以燎原》","《反对本本主义》","《矛盾论》、《实践论》","《新民主主义论》"],"answer":"B"},{"id":"21","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想的科学内涵是:()","options":["马克思列宁主义在中国的运用和发展","中国共产党集体智慧的结晶","被实践证明了的关于中国革命和建设的正确的理论原则和经验总结","毛泽东的思想"],"answer":"ABC"},{"id":"22","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"第一次国内革命战争时期毛泽东提出的新民主主义革命基本思想主要体现在以下著作中","options":["《星星之火可以燎原》","《中国社会各阶级的分析》","《反对本本主义》","《湖南农民运动考察报告》"],"answer":"BD"},{"id":"23","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"标志着毛泽东思想初步形成的重要文章主要有:()","options":["《中国的红色政权为什么能够存在》","《井冈山的斗争》","《星星之火可以燎原》","《反对本本主义》"],"answer":"ABCD"},{"id":"24","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"体现毛泽东思想得到多方面展开而趋于成熟的著作主要有:()","options":["《新民主主义论》","《矛盾论》、《实践论》","《中国革命和中国共产党》、《论联合政府》","《&lt;共产党人&gt;发刊词》"],"answer":"ABCD"},{"id":"25","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想继续得到发展是在:()","options":["国民革命时期","土地革命时期","解放战争时期","中华人民共和国建立后"],"answer":"CD"},{"id":"26","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想成熟的突出表现是:()","options":["科学阐述了新民主主义革命的对象、动力、领导力量、性质和前途等基本问题","提出了新民主主义革命的总路线","制定了相应的经济、政治、文化纲领","指明了新民主主义革命的具体目标"],"answer":"ABCD"},{"id":"27","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"下列各项中,体现毛泽东思想在解放战争时期和新中国成立以后继续得到发展的有:()","options":["提出了人民民主专政理论","提出了社会主义改造理论","提出了两类矛盾的学说特别是正确处理人民内部矛盾的理论","提出了把马列主义的基本原理同中国革命和建设的具体实际\"第二次结合\""],"answer":"ABCD"},{"id":"28","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想有多方面的丰富内容,除了关于新民主主义革命理论外,还包括:()","options":["社会主义革命和社会主义建设的理论","革命军队建设和军事战略的理论","思想政治工作和文化工作的理论","政策和策略以及党的建设的理论"],"answer":"ABCD"},{"id":"29","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东认为,中国资产阶级包括:()","options":["大资产阶级(或买办资产阶级)","城市小资产阶级","民族资产阶级","知识分子"],"answer":"AC"},{"id":"30","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"无产阶级及其政党要实现自己对同盟者的领导,须具备的条件是:()","options":["率领被领导者向着共同的敌人作坚决斗争并取得胜利","对同盟者采取\"有理、有利、有节\"的策略原则","坚持独立自主的原则,对同盟者实行又联合又斗争的政策","对被领导者给以物质利益,至少不损害其利益,同时给以政治教育"],"answer":"AD"},{"id":"31","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想的活的灵魂是:()","options":["实事求是","群众路线","独立自主","与时俱进"],"answer":"ABC"},{"id":"32","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想的活的灵魂之一——实事求是的基本要求是:()","options":["理论联系实际","调查研究","坚持在实践中检验真理和发展真理","一切从实际出发"],"answer":"ACD"},{"id":"33","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想的历史地位主要表现为:()","options":["是马克思主义中国化时代化的第一个重大理论成果","是中国革命和建设的科学指南","是中国共产党和中国人民宝贵的精神财富","是新时期全党全国各族人民团结奋斗的共同思想基础"],"answer":"ABC"},{"id":"34","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想在( )。","options":["国民革命战争时期形成","土地革命战争时期形成","抗日战争时期走向成熟","在解放战争时期和中华人民共和国成立后继续发展"],"answer":"BCD"},{"id":"35","type":"multi","chapter":"第一章 毛泽东思想及其历史地位","stem":"毛泽东思想所确立的马克思主义中国化时代化的(),指导着我们党不断推进马克思主义中国化时代化,不断开辟马克思主义中国化时代化新境界。","options":["前进方向","基本原则","基本方法","主要内容"],"answer":"ABC"},{"id":"36","type":"single","chapter":"第二章 新民主主义革命理论","stem":"解决中国革命问题的基本前提是:()","options":["分清敌人和朋友","认清中国国情","坚持无产阶级领导权","建立工农联盟"],"answer":"B"},{"id":"37","type":"single","chapter":"第二章 新民主主义革命理论","stem":"近代中国的社会性质是:()","options":["封建社会","殖民地","资本主义社会","半殖民地半封建社会"],"answer":"D"},{"id":"38","type":"single","chapter":"第二章 新民主主义革命理论","stem":"近代中国革命以()为开端,进入新民主主义革命阶段:","options":["戊戌变法","辛亥革命","五四运动","中国共产党的成立"],"answer":"C"},{"id":"39","type":"single","chapter":"第二章 新民主主义革命理论","stem":"中国革命的首要问题是:()","options":["认清革命的性质","认清革命发展前途","认清革命的敌人和朋友","认清革命的发展阶段"],"answer":"C"},{"id":"40","type":"single","chapter":"第二章 新民主主义革命理论","stem":"中国革命的首要对象是:()","options":["资产阶级","官僚资本主义","帝国主义","封建主义"],"answer":"C"},{"id":"41","type":"single","chapter":"第二章 新民主主义革命理论","stem":"新民主主义革命最基本的动力是:()","options":["无产阶级","农民阶级","贫农","工人和农民"],"answer":"A"},{"id":"42","type":"single","chapter":"第二章 新民主主义革命理论","stem":"新民主主义革命的主力军是:()","options":["工人阶级","农民阶级","民族资产阶级","小资产阶级"],"answer":"B"},{"id":"43","type":"single","chapter":"第二章 新民主主义革命理论","stem":"新民主主义革命的基本问题是:()","options":["无产阶级领导权问题","农民问题","武装斗争问题","工农联盟问题"],"answer":"B"},{"id":"44","type":"single","chapter":"第二章 新民主主义革命理论","stem":"新民主主义革命的中心问题是:()","options":["无产阶级的领导权","农民阶级的主力军地位","民族资产阶级的领导权","无产阶级同资产阶级的联盟"],"answer":"A"},{"id":"45","type":"single","chapter":"第二章 新民主主义革命理论","stem":"毛泽东所说的中国民族资产阶级\"从娘肚子里带出来的老毛病\"是指:()","options":["软弱性","妥协性","动摇性","两面性"],"answer":"A"},{"id":"46","type":"single","chapter":"第二章 新民主主义革命理论","stem":"区别新民主主义革命与旧民主主义革命的根本标志是:()","options":["革命指导思想不同","革命领导权不同","革命前途不同","革命对象不同"],"answer":"B"},{"id":"47","type":"single","chapter":"第二章 新民主主义革命理论","stem":"中国民主主义革命经历了旧民主主义革命和新民主主义革命两个阶段,\"旧\"阶段转变到\"新\"阶段的根本标志是:()","options":["中国革命领导阶级的变化","中国革命主要对象的变化","中国革命基本性质的变化","中国社会主要矛盾的变化"],"answer":"A"},{"id":"48","type":"single","chapter":"第二章 新民主主义革命理论","stem":"\"统帅革命的资产阶级,联合革命的无产阶级,实行资产阶级民主革命。\"这一观点的错误实质在于:()","options":["抹杀农民阶级的革命性","夸大资产阶级的作用","放弃无产阶级的领导权","忽视武装斗争的重要性"],"answer":"C"},{"id":"49","type":"single","chapter":"第二章 新民主主义革命理论","stem":"新民主主义革命的性质是:()","options":["无产阶级革命","农民阶级革命","新式的特殊的资产阶级民主主义革命","旧式资产阶级民主主义革命"],"answer":"C"},{"id":"50","type":"single","chapter":"第二章 新民主主义革命理论","stem":"新民主主义的政体是:()","options":["各革命阶级的联合专政","多党合作的政治协商制度","民主集中制的人民代表大会制度","无产阶级专政"],"answer":"C"},{"id":"51","type":"single","chapter":"第二章 新民主主义革命理论","stem":"抗日战争时期,中国共产党在敌后抗日根据地实行的土地政策是:()","options":["没收地主土地分配给农民","保持原有的土地状态","没收一切土地平均分配","减租减息"],"answer":"D"},{"id":"52","type":"single","chapter":"第二章 新民主主义革命理论","stem":"包含着新民主主义革命和社会主义革命双重性质的经济政策是:()","options":["没收封建地主阶级的土地","保护民族工商业","没收官僚垄断资本","没收民族资本"],"answer":"C"},{"id":"53","type":"single","chapter":"第二章 新民主主义革命理论","stem":"新民主主义经济纲领中极具特色的一项内容是:()","options":["没收封建地主阶级的土地归农民所有","保护民族工商业","没收官僚垄断资本归新民主主义国家所有","没收民族资本归新民主主义国家所有"],"answer":"B"},{"id":"54","type":"single","chapter":"第二章 新民主主义革命理论","stem":"新民主主义文化的特征是无产阶级领导的()文化:","options":["民族的科学的大众的","新民主主义","社会主义","共产主义"],"answer":"A"},{"id":"55","type":"single","chapter":"第二章 新民主主义革命理论","stem":"秋收起义失败后,毛泽东创建的()革命根据地,把武装斗争的主攻方向首先指向农村:","options":["井冈山","中央","湘鄂西","百色"],"answer":"A"},{"id":"56","type":"single","chapter":"第二章 新民主主义革命理论","stem":"党成立初期,首先把工作重心放在:()","options":["郊区","国外","农村","城市"],"answer":"D"},{"id":"57","type":"single","chapter":"第二章 新民主主义革命理论","stem":"毛泽东系统阐述中国革命三大法宝的文章是:()","options":["《井冈山的斗争》","《&lt;共产党人&gt;发刊词》","《星星之火,可以燎原》","《战争和战略问题》"],"answer":"B"},{"id":"58","type":"single","chapter":"第二章 新民主主义革命理论","stem":"中国革命建立最广泛的统一战线不仅是必要的,而且是可能的,这种可能是由:()","options":["中国半殖民地半封建社会的阶级状况决定的","半殖民地半封建的中国社会交织在一起的诸多矛盾决定的","中国革命的长期性、残酷性及其发展的不平衡性所决定的","战争与革命的时代主题决定的"],"answer":"B"},{"id":"59","type":"single","chapter":"第二章 新民主主义革命理论","stem":"在同资产阶级的联盟中必须实行的方针是:()","options":["既联合又斗争","一切经过统一战线","一切服从统一战线","团结一批评一团结"],"answer":"A"},{"id":"60","type":"single","chapter":"第二章 新民主主义革命理论","stem":"无产阶级及其政党在统一战线中必须坚持的原则是:()","options":["一切经过统一战线","一切服从统一战线","坚决斗争","独立自主"],"answer":"D"},{"id":"61","type":"single","chapter":"第二章 新民主主义革命理论","stem":"中国新民主主义革命时期的统一战线包含着两个联盟。其中基本的、主要的联盟是:()","options":["工人阶级同城市小资产阶级的联盟","工人阶级同农民、小资产阶级等其他劳动人民的联盟","工人阶级同农民、小资产阶级和民族资产阶级的联盟","工人阶级同可以合作的非劳动人民的联盟"],"answer":"B"},{"id":"62","type":"single","chapter":"第二章 新民主主义革命理论","stem":"中国革命的特点和优点是:()","options":["由中国共产党领导的人民战争","目标是争取民族独立、人民解放,最终实现国家繁荣富强","以反帝反封建作为两大革命任务","以武装的革命反对武装的反革命"],"answer":"D"},{"id":"63","type":"single","chapter":"第二章 新民主主义革命理论","stem":"人民军队的宗旨是:()","options":["把政治工作放在一切工作的首位","坚持中国共产党对军队的绝对领导","全心全意为人民服务","坚持以马克思主义为指导"],"answer":"C"},{"id":"64","type":"single","chapter":"第二章 新民主主义革命理论","stem":"建设新型人民军队的根本原则是:()","options":["全心全意为人民服务","坚持党对军队的绝对领导","广泛的思想政治工作","官兵平等"],"answer":"B"},{"id":"65","type":"single","chapter":"第二章 新民主主义革命理论","stem":"1949年,毛泽东在()一文中,对新民主主义革命的基本经验作了集中概括,丰富和发展了马克思主义关于无产阶级领导人民革命的理论。","options":["《论人民民主专政》","《〈共产党人〉发刊词》","《中国革命和中国共产党》","《改造我们的学习》"],"answer":"A"},{"id":"66","type":"single","chapter":"第三章 社会主义改造理论","stem":"中国共产党提出由新民主主义社会和平过渡到社会主义社会的最初设想是()","options":["民主革命时期","中华人民共和国成立后","社会主义改造完成后","\"文化大革命\"时期"],"answer":"A"},{"id":"67","type":"single","chapter":"第三章 社会主义改造理论","stem":"1952年底,随着土地改革的基本完成,我国社会的主要矛盾已转变成( )","options":["人民大众同帝国主义、封建主义及其走狗国民党反动派残余的矛盾","帝国主义和中华民族的矛盾、封建主义和人民大众的矛盾","工人阶级同资产阶级的矛盾、社会主义道路同资本主义道路的矛盾","人民日益增长的物质文化需要同落后的社会生产之间的矛盾"],"answer":"C"},{"id":"68","type":"single","chapter":"第三章 社会主义改造理论","stem":"新民主主义社会中,处于领导地位的经济成分是()","options":["个体经济","私人和国家资本主义经济","国营经济","合作社经济"],"answer":"C"},{"id":"69","type":"single","chapter":"第三章 社会主义改造理论","stem":"建国初期,我国社会主义国营经济建立的最主要途径和手段是( )","options":["没收帝国主义在华企业","没收官僚资本","没收民族资本","没收地主阶级的土地和财产"],"answer":"B"},{"id":"70","type":"single","chapter":"第三章 社会主义改造理论","stem":"从中华人民共和国成立到社会主义改造基本完成,是我国从新民主主义到社会主义的过渡时期,这一时期,个体经济向社会主义集体经济过渡的形式是( )","options":["国营经济","私人资本主义经济","国家资本主义经济","合作社经济"],"answer":"D"},{"id":"71","type":"single","chapter":"第三章 社会主义改造理论","stem":"毛泽东关于农业社会主义改造理论来源是( )","options":["马克思的合作化理论","恩格斯的合作化理论","列宁的合作化理论","斯大林的合作化理论"],"answer":"C"},{"id":"72","type":"single","chapter":"第三章 社会主义改造理论","stem":"标志着资本主义工商业的社会主义改造已经基本完成是实现了( )","options":["手工业合作社的建立","农业合作化","全行业公私合营","生产责任制"],"answer":"C"},{"id":"73","type":"single","chapter":"第三章 社会主义改造理论","stem":"过渡时期总路线的主体是( )","options":["国家的社会主义工业化","私营经济的国有化","个体农业的集体化","对个体农业、手工业和资本主义工商业的改造"],"answer":"A"},{"id":"74","type":"single","chapter":"第三章 社会主义改造理论","stem":"关于社会主义过渡时期总路线错误的说法是( )","options":["实现社会主义工业化,农业、手工业和资本主义工商业的社会主义改造","过渡时期结束的标志是社会主义改造结束","以单一的社会主义公有制和计划经济体制为目标","以中国特色社会主义为目标"],"answer":"D"},{"id":"75","type":"single","chapter":"第三章 社会主义改造理论","stem":"党在过渡时期总路线的实质是( )","options":["改变生产资料的私有制","发展生产力","消灭剥削阶级","改造个体农民和手工业者"],"answer":"A"},{"id":"76","type":"single","chapter":"第三章 社会主义改造理论","stem":"中国社会主义改造和社会主义建设道路中一个十分突出的特殊问题是( )","options":["一个落后的农业国的工业化问题","农业的社会主义改造问题","农业的机械化问题","民族资本主义工商业的社会主义改造问题"],"answer":"A"},{"id":"77","type":"single","chapter":"第三章 社会主义改造理论","stem":"制定我国第一个五年计划的依据是( )","options":["国民经济的恢复和发展","土地改革的完成","实现国家工业化","过渡时期的总路线"],"answer":"D"},{"id":"78","type":"single","chapter":"第三章 社会主义改造理论","stem":"中国共产党对个体农业和手工业实行社会主义改造的方针是( )","options":["趁热打铁,积极领导","自愿互利,国家帮助","积极领导,稳步前进","国家帮助,典型示范"],"answer":"C"},{"id":"79","type":"single","chapter":"第三章 社会主义改造理论","stem":"我国在手工业的社会主义改造过程中所办的手工业生产合作社属于( )","options":["社会主义性质","半社会主义性质","社会主义萌芽性质","非社会主义性质"],"answer":"A"},{"id":"80","type":"single","chapter":"第三章 社会主义改造理论","stem":"中国共产党对资本主义工商业进行社会主义改造的主要方式是( )","options":["和平赎买","统购统销","公私合营","合作化"],"answer":"A"},{"id":"81","type":"single","chapter":"第三章 社会主义改造理论","stem":"我国对资本主义工商业改造创造了国家资本主义的各种形式,其高级形式是( )","options":["统购包销","委托加工,计划订货","经销、代销","公私合营"],"answer":"D"},{"id":"82","type":"single","chapter":"第三章 社会主义改造理论","stem":"我国在对资产阶级工商业实行社会主义改造的过程中,国家向私营企业投资入股,企业生产资料由国家和资本家共同所有,利润分配仍然实行\"四马分肥\",国家向企业派出公方代表,与工人、资本家共同管理和改造企业,公方代表居领导地位。这时的企业性质( )","options":["仍然属于私营企业","属于半社会主义性质","具有了社会主义因素","基本上属于社会主义国营性质"],"answer":"B"},{"id":"83","type":"single","chapter":"第三章 社会主义改造理论","stem":"在我国的过渡性质时期,民族资产阶级与工人阶级的矛盾性质是( )","options":["对抗性的","非对抗性的","既有对抗性一面又有非对抗性的一面","没有矛盾"],"answer":"C"},{"id":"84","type":"single","chapter":"第三章 社会主义改造理论","stem":"我国进入社会主义初级阶段的起点及剥削阶级和剥削制度被消灭的标志是( )","options":["社会主义改造的完成","国民经济恢复任务的完成","中华人民共和国的成立","中共十三大的召开"],"answer":"A"},{"id":"85","type":"single","chapter":"第三章 社会主义改造理论","stem":"1956年,社会主义改造基本完成以后,我国社会的主要矛盾是( )","options":["工人阶级和资产阶级的矛盾","社会主义道路和资本主义道路之间的矛盾","人民日益增长的物质文化生活需要同落后的社会生产之间的矛盾","坚持思想基本原则和资产阶级自由化之间的矛盾"],"answer":"C"},{"id":"86","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"毛泽东明确提出以苏为鉴,独立自主地探索适合中国情况的社会主义建设道路的著作是:()","options":["《论十大关系》","《新民主主义论》","《关于正确处理人民内部矛盾的问题》","《中国革命和中国共产党》"],"answer":"A"},{"id":"87","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"成为党探索中国社会主义建设道路良好开端的文章,是毛泽东发表的:()","options":["《论人民民主专政》","《论十大关系》","《纪念孙中山先生》","《关于正确处理人民内部矛盾的问题》"],"answer":"B"},{"id":"88","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"《论十大关系》的报告围绕的基本方针是:()","options":["独立自主","自力更生为主,争取外援为辅","调动一切积极因素,为社会主义事业服务","走中国特色社会主义道路"],"answer":"C"},{"id":"89","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"《论十大关系》的前五条主要讨论经济问题,其中前三条讲重工业和轻工业、农业的关系,沿海工业和内地工业的关系,经济建设和国防建设的关系。这实际上明确提出了:()","options":["中国的工业化道路问题","中国的经济建设问题","中国的工业发展问题","工业发展的平衡问题"],"answer":"A"},{"id":"90","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"不属于《论十大关系》讨论范畴的是:()","options":["社会主义市场经济和计划经济的关系","重工业和轻工业、农业的关系","国家、生产单位和生产者个人的关系","革命和反革命的关系"],"answer":"A"},{"id":"91","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"党的八大正确分析了社会主义改造完成后我国社会主要矛盾的变化,提出今后党和国家的工作重点是:()","options":["调动一切积极因素,为社会主义事业服务","正确处理人民内部矛盾,巩固社会主义制度","集中力量发展生产力,建设社会主义现代化强国","技术革命和社会主义建设"],"answer":"D"},{"id":"92","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"毛泽东系统论述社会主义社会矛盾理论的著作是:()","options":["《关于正确处理人民内部矛盾的问题》","《新民主主义论》","《论十大关系》","《中国社会各阶级的分析》"],"answer":"A"},{"id":"93","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"毛泽东在《关于正确处理人民内部矛盾的问题》的报告中指出,社会主义社会的基本矛盾是:()","options":["人民内部的非对抗性的矛盾","生产关系和生产力之间、上层建筑和经济基础之间的矛盾","无产阶级和资产阶级之间、社会主义和资本主义之间的矛盾","人民日益增长的物质文化需要同落后的社会生产之间的矛盾"],"answer":"B"},{"id":"94","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"毛泽东认为社会主义社会基本矛盾的特点是:()","options":["相适应","相矛盾","又相适应又相矛盾","不相适应又不相矛盾"],"answer":"C"},{"id":"95","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"毛泽东认为,解决社会主义基本矛盾的途径和方法是:()","options":["经过革命","经过社会主义制度本身来解决","经过发展生产力","经过改变社会主义制度"],"answer":"B"},{"id":"96","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"下列不属于人民内部矛盾的是:()","options":["工人阶级和农民阶级的矛盾","工人、农民同知识分子之间的矛盾","敌对分子、敌对势力与人民的矛盾","民主同集中的矛盾"],"answer":"C"},{"id":"97","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"人民内部矛盾是:()","options":["分清是非的问题","分清你我的问题","分清敌我的问题","分清对错的问题"],"answer":"A"},{"id":"98","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"解决敌我矛盾应采用:()","options":["说服的方法","专政的方法","民主的方法","教育的方法"],"answer":"B"},{"id":"99","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"毛泽东在1957年2月所作的《关于正确处理人民内部矛盾的问题》的报告中,系统论述了社会主义社会矛盾的理论。毛泽东强调,社会主义国家政治生活的主题是:()","options":["正确区分和处理两类不同性质矛盾的问题","正确处理人民内部矛盾的问题","正确处理敌我矛盾的问题","正确认识和处理阶级斗争的问题"],"answer":"B"},{"id":"100","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"关于人民内部矛盾表述正确的是:()","options":["人民内部矛盾是由于人民根本利益不一致导致的","领导同被领导之间的矛盾属于人民内部矛盾","工人阶级和民族资产阶级之间的矛盾不属于人民内部矛盾","人民内部矛盾是固定不变的,不会随条件的变化而发生转化"],"answer":"B"},{"id":"101","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"在人民民主专政体制下,正确处理两类不同性质社会矛盾的基本方法是:()","options":["依法严惩和说服教育","暴力镇压和说服教育","批评和团结","专政和民主"],"answer":"D"},{"id":"102","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"解决科学文化领域的矛盾应坚持的方针是:()","options":["百家争鸣、百花齐放","团结-批评-团结","文化交流和艺术实践","异域文化之间的交流与碰撞"],"answer":"A"},{"id":"103","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"毛泽东明确提出要走一条有别于苏联的中国工业化道路的著述是:()","options":["《论十大关系》","《关于正确处理人民内部矛盾的问题》","《为争取国家财政经济状况基本好转而斗争》","《在扩大的中央工作会议上的讲话》"],"answer":"B"},{"id":"104","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"促使我党思考和探索如何走中国工业化道路的直接原因是:()","options":["以苏为鉴,吸取苏联在建设社会主义中的教训","我国重工业、农业和轻工业发展的比例失调","我国生产力落后,经济基础薄弱","受苏联的影响,强调重工业的发展。"],"answer":"A"},{"id":"105","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"走中国工业化道路的关键问题是:()","options":["正确处理重工业和轻工业、农业的关系","正确处理人民内部的矛盾","正确处理两类不同性质的矛盾","调动一切积极因素为社会主义建设服务"],"answer":"A"},{"id":"106","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"我国走工业化道路的根本原因是:()","options":["新中国的工业基础十分薄弱","中国民族工业发展已经具有了深厚的基础","是中国共产党重视国家工业化的一贯政策","实现民族独立和国家富强的内在要求和必要条件"],"answer":"D"},{"id":"107","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"实现我国工业化应坚持的方针不包括:()","options":["\"两条腿走路\"","农业为基础,工业为主导,以农轻重为序","中央工业和地方工业并举","国家、生产单位和生产者个人利益兼顾"],"answer":"D"},{"id":"108","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"在社会主义建设道路初步探索过程中,关于生产资料所有制调整方面,提出了\"三个主体,三个补充\"设想的是:()","options":["毛泽东","刘少奇","陈云","邓小平"],"answer":"C"},{"id":"109","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"我党提出的\"三个主体、三个补充\"意味着:()","options":["社会主义国家要消除商品经济","发展商品生产会导致资本主义","在我国经济建设发展过程中,也要发挥非公有制经济和市场的作用","商品经济是资本主义的本质特征"],"answer":"C"},{"id":"110","type":"single","chapter":"第四章 社会主义建设道路初步探索的理论成果","stem":"党的八大提出的经济建设的正确方针是:()","options":["统筹兼顾,全面安排","既反保守又反冒进、在综合平衡中稳步前进","团结互助,统筹兼顾","具体问题具体分析"],"answer":"B"},{"id":"111","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"20世纪70年代,整个世界发生着大变动大调整,时代主题是()","options":["革命与战争","和平与发展","合作与共赢","开放与融通"],"answer":"B"},{"id":"112","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"科技进步日新月异,以()为核心的高新技术的发展,极大地改变了人们的生产、生活方式和国际经济、政治关系……","options":["经济革命","信息技术","全球化","多极化"],"answer":"B"},{"id":"113","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"1956年,随着苏共二十大的召开和波匈加件的发生,()的弊端初步暴露出来……","options":["社会主义","大跃进","苏联模式","人民公社化"],"answer":"C"},{"id":"114","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"党的十一届三中全会以后,以()同志为主要代表的中国共产党人,领导全党和全国人民果断地纠正了这些错误,深刻地分析了错误出现的原因,同时又坚决地维护和继承了过去在理论上和实践上所取得的一切积极成果。","options":["邓小平","陈云","叶剑英","胡耀邦"],"answer":"A"},{"id":"115","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"以胡锦涛同志为主要代表的中国共产党人,创造性地回答了()这一重大问题。","options":["什么是社会主义,怎样建设社会主义","建设什么样的党,怎样建设党","实现什么样的发展、怎样发展","什么是马克思主义,怎样发展马克思主义"],"answer":"C"},{"id":"116","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"我国改革从()率先突破,逐步转向城市经济体制改革并全面铺开,确立社会主义市场经济的改革方向……","options":["计划经济为主,市场经济为辅","计划少一点,市场多一点","包干到户","农村实行家庭联产承包责任制"],"answer":"D"},{"id":"117","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"1978年12月召开的党的十一届三中全会,重新确立了()的思想路线,彻底否定了\"以阶级斗争为纲\"的错误理论和实践。","options":["实事求是","群众路线","独立自主","解放思想"],"answer":"A"},{"id":"118","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"1982年邓小平在党的十二大开幕词中明确提出:走自己的道路,()。","options":["建设社会主义市场经济","建设有中国特色的社会主义","实现马克思主义中国化时代化","建设社会主义初级阶段"],"answer":"B"},{"id":"119","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"1987年召开的党的十三大,第一次比较系统地论述了我国社会主义初级阶段理论,明确概括和全面阐发了党的()的基本路线。","options":["社会主义全面发展","\"三步走\"","\"一个中心、两个基本点\"","\"四项基本原则\""],"answer":"C"},{"id":"120","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"南方谈话是()的集大成之作,从理论上深刻地回答了当时困扰和束缚人们思想的一系列重大问题,推动改革开放和社会主义现代化建设进入新阶段,邓小平理论也逐步走向成熟。","options":["毛泽东思想","邓小平理论","\"三个代表\"重要思想","科学发展观"],"answer":"B"},{"id":"121","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"我们党所以能够取得这样的胜利,根本原因是在十四年的伟大实践中,坚持把()同中国具体实际相结合,逐步形成和发展了建设有中国特色社会主义的理论。","options":["马克思列宁主义","毛泽东思想","马克思主义基本原理","科学社会主义"],"answer":"C"},{"id":"122","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"1997年召开的党的()正式提出\"邓小平理论\"这一概念,深刻阐述了邓小平理论的历史地位和指导意义,进一步论述了邓小平对这一理论的创立作出的独创性贡献。","options":["十四大","十五大","十六大","十七大"],"answer":"B"},{"id":"123","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"()的宪法修正案正式将邓小平理论载入宪法。","options":["1998年","1999年","2000年","2001年"],"answer":"B"},{"id":"124","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"首次对\"三个代表\"进行了比较全面的阐述是:()","options":["1989年党十四届三中全会","1997年党十五大","2000年,江泽民在广东考察工作时","2001年7月1日,江泽民在庆祝中国共产党成立80周年大会上的讲话"],"answer":"C"},{"id":"125","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"2002年11月,党的()将\"三个代表\"重要思想同马克思列宁主义、毛泽东思想和邓小平理论一道确立为党必须长期坚持的指导思想,并写入党章,实现了我们党指导思想的又一次与时俱进。","options":["十五大","十六大","十七大","十八大"],"answer":"B"},{"id":"126","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"我们党的文件中第一次提出科学发展观是在()。","options":["党的十六大","党的十六届三中全会","党的十六届四中全会","党的十七大"],"answer":"B"},{"id":"127","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"党的()把科学发展观写入党章,科学发展观进一步走向成熟。","options":["十六大","十七大","十八大","十九大"],"answer":"B"},{"id":"128","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"2017年,党的()把习近平新时代中国特色社会主义思想确立为党必须长期坚持的指导思想并庄严地写入党章,实现了党的指导思想的与时俱进。","options":["十七大","十八大","十九大","二十大"],"answer":"C"},{"id":"129","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"2018年,()通过的宪法修正案,郑重地把习近平新时代中国特色社会主义思想载入宪法,实现了国家指导思想的与时俱进。","options":["十三届全国人大一次会议","十三届全国人大二次会议","十四届全国人大一次会议","十四届全国人大二次会议"],"answer":"A"},{"id":"130","type":"single","chapter":"第五章 邓小平理论、\"三个代表\"重要思想、科学发展观","stem":"2008年12月,中央召开经济工作会议,强调科学发展观第一要义是(),越是在经济发展面临较大困难的时候,我们越是要坚定不移地贯彻发展是硬道理的战略思想。","options":["发展","开放","改革","以人为本"],"answer":"A"},{"id":"131","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"1980年5月,()第一次提出了\"社会主义的本质\"这个概念。","options":["毛泽东","邓小平","江泽民","胡锦涛"],"answer":"B"},{"id":"132","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"社会主义的本质,是解放生产力,发展生产力,消灭剥削,消除两极分化,最终达到()。","options":["小康社会","共同富裕","现代化国家","现代化强国"],"answer":"B"},{"id":"133","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"()邓小平第一次把社会主义初级阶段作为事关全局的基本国情加以把握,明确了这一基本国情是制定路线方针政策的出发点和根本依据。","options":["党的十一届三中全会","党的十二大开幕词","党的十三大召开前夕","党的十四大"],"answer":"C"},{"id":"134","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"1979年3月,邓小平在党的理论工作务虚会上发表()的讲话。","options":["《坚持四项基本原则》","《解放思想实事求是,团结一致向前看》","《社会主义本质》","《社会主义计划经济与市场经济》"],"answer":"A"},{"id":"135","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"邓小平在南方谈话中再次明确了()的观点。","options":["\"解放思想\"","\"社会主义初级阶段\"","\"科学技术是第一生产力\"","\"党的基本路线\""],"answer":"C"},{"id":"136","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"党十二届三中全会提出了社会主义经济是:()","options":["社会主义计划经济","有计划的商品经济","社会主义市场经济","自由市场经济"],"answer":"B"},{"id":"137","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"邓小平理论轮廓的形成标志是:()","options":["党十一届三中全会公报","党的十三大报告","党十五大报告","南方谈话"],"answer":"B"},{"id":"138","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"邓小平正式提出\"建设有中国特色的社会主义\"科学命题是在:()","options":["党的十一届三中全会上","党的十一届六中全会上","党的十二大上","党的十三大上"],"answer":"C"},{"id":"139","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"把邓小平理论确立为党的指导思想是在:()","options":["党的十三大上","党的十四大上","党的十五大上","党的十六大上"],"answer":"C"},{"id":"140","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"邓小平理论首要的基本理论问题是:()","options":["社会主义的根本任务问题","社会主义的发展阶段问题","社会主义的发展动力问题","什么是社会主义,怎样建设社会主义的问题"],"answer":"D"},{"id":"141","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"1997年9月,()又进一步概括了社会主义初级阶段的特征,强调现在处于并将长时期处于社会主义初级阶段是中国最大的实际。","options":["党的十三大","党的十四大","党的十五大","党的十六大"],"answer":"C"},{"id":"142","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"邓小平理论走向成熟的标志是:()","options":["党十三大报告","南方谈话","党十五大报告","《邓小平文选》的出版发行"],"answer":"B"},{"id":"143","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"邓小平理论活的灵魂是:()","options":["\"三个有利于\"标准","四项基本原则","解放思想,实事求是思想路线","改革开放"],"answer":"C"},{"id":"144","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"全面改革进程中思想解放的科学总结是指:()","options":["《坚持四项基本原则》","《解放思想,实事求,团结一致向前看》","《邓小平文选》二卷","《在武昌、深圳、珠海、上海等地的谈话要点》"],"answer":"D"},{"id":"145","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"邓小平和我们党对当代中国基本国情的科学判断是:()","options":["我国是最大的发展中国家","我国正处于社会主义初级阶段","中国特色社会主义进入新时代","我国已经是发达社会主义"],"answer":"B"},{"id":"146","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"系统论述社会主义初级阶段理论的是:()","options":["党十二大","党十三大","党十四大","党十五大"],"answer":"B"},{"id":"147","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"党和国家的生命线,人民的幸福线指是:()","options":["党的基本纲领","党的基本经验","党的基本方略","党的基本路线"],"answer":"D"},{"id":"148","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"建设中国特色社会主义的总依据是:()","options":["社会主义本质理论","社会主义初级阶段理论","社会主义改革开放理论","社会主义根本任务理论"],"answer":"B"},{"id":"149","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"社会主义的根本任务是:()","options":["群众运动","阶级斗争","发展生产力","掌控意识形态领导权"],"answer":"C"},{"id":"150","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"中国的发展离不开科学,邓小平深刻地概括为:()","options":["\"三个有利于\"的标准","科学兴国战略和人才强国战略","科学技术是第一生产力","创新驱动发展战略"],"answer":"C"},{"id":"151","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"\"一个党,一个国家,一个民族,如果一切从本本出发,思想僵化,迷信盛行,那它就不能前进,它的生机就停止了,就要亡党亡国。\"这句话要表达的是()","options":["坚持走社会主义道路","坚持解放思想、实事求是","坚持改革开放","中国还处在社会主义初级阶段"],"answer":"B"},{"id":"152","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"建设中国特色社会主义,关键在于坚持、加强和改善()","options":["党的领导","基层群众自治","社会主义市场经济","国家发展战略"],"answer":"A"},{"id":"153","type":"single","chapter":"第六章 邓小平理论主要内容","stem":"1981年,()提出了\"计划经济为主、市场调节为辅\"的方针,允许市场调节存在和发挥作用,这为形成社会主义市场经济理论开辟了道路。","options":["党的十一届六中全会","党的十二大","党的十二届三中全会","党的十三"],"answer":"A"},{"id":"154","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"全面阐述了\"三个代表\"重要思想的科学内涵和基本内容是:()","options":["1989年党十四届三中全会","1997年党十五大","2000年,江泽民在广东考察工作时","2001年7月1日,江泽民在庆祝中国共产党成立80周年大会上的讲话"],"answer":"D"},{"id":"155","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"\"三个代表\"重要思想产生的历史起点和逻辑起点:()","options":["四项基本原则","\"四个如何认识\"","四个全面","四个伟大"],"answer":"B"},{"id":"156","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"勾画建立社会主义市场经济体制的蓝图和基本框架是:()","options":["党十四大","党十四届三中全会","党十八届三中全会","党十六大"],"answer":"B"},{"id":"157","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"\"三个代表\"重要思想是有机联系科学体系,\"贯彻'三个代表'要求,关键在:()","options":["坚持与时俱进","保持党的先进性","坚持执政为民","以人为本的立场"],"answer":"A"},{"id":"158","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"\"三个代表\"重要思想是有机联系科学体系,\"贯彻'三个代表'要求,核心在:()","options":["坚持与时俱进","保持党的先进性","坚持执政为民","以人为本的立场"],"answer":"B"},{"id":"159","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"\"三个代表\"重要思想是有机联系科学体系,\"贯彻'三个代表'要求,本质在:()","options":["坚持与时俱进","保持党的先进性","坚持执政为民","以人为本的立场"],"answer":"C"},{"id":"160","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民曾强调指出,马克思主义最重要的理论品质是:()","options":["批评与自我批评","敢讲真话,做实事","与时俱进","尊重实践、尊重群众"],"answer":"C"},{"id":"161","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"生产力最革命、最活跃的因素是:()","options":["生产资料","科学技术","人","劳动对象"],"answer":"C"},{"id":"162","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民指出,第一资源是:()","options":["石油资源","生态资源","人才资源","劳动力资源"],"answer":"C"},{"id":"163","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"我们党站在时代前列,保持先进性的根本体现和根本要求是:()","options":["必须牢牢把握先进文化的前进方向,建设社会主义精神文明","不断实现好维护好发展好最广大人民的根本利益","满足人民群众日益增长的物质文化需要","始终代表中国先进生产力的发展要求,大力促进先进生产力的发展"],"answer":"D"},{"id":"164","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民同志强调,我们全部工作的出发点和落脚点,就是:()","options":["构建人类命运共同体","建设社会主义精神文明","不断实现好维护好发展好最广大人民的根本利益","建立和谐世界"],"answer":"C"},{"id":"165","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"党要承担起推动中国社会进步的历史责任,必须始终紧紧抓住:()","options":["战略机遇期","科教兴国战略","发展这个执政兴国的第一要务","社会主义政治文明建设"],"answer":"C"},{"id":"166","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"明确提出使用\"社会主义市场经济体制\"这个提法的是:()","options":["邓小平","江泽民","胡锦涛","习近平"],"answer":"B"},{"id":"167","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"在建设社会主义市场经济体制过程中,进一步探索公有制特别是国有制的多种有效实现形式,积极推行()","options":["股份制","股份合作制","承包制","租赁制"],"answer":"A"},{"id":"168","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"社会主义(初级阶段)基本经济制度是:()","options":["公有制为主体、多种所有制经济共同发展","各类市场主体自由竞争","建立健全社会主义分配制度","国家保护一切财产安全和利益"],"answer":"A"},{"id":"169","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民在()把社会主义物质文明、政治文明、精神文明一起确立为社会主义现代化全面发展的三大基本目标。","options":["党十五大报告中","党十六大报告中","建党八十周年讲话中","党十四届三中全会的讲话中"],"answer":"B"},{"id":"170","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"建设社会主义政治文明,最根本的就是要:()","options":["坚持党的领导、人民当家作主和依法治国的有机统一","全面进行政治体制改革,建立宪政国家","全面建成小康社会,实现经济高速增长扩张","坚持改革开放,建设法制国家"],"answer":"A"},{"id":"171","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"坚持党的领导,核心是:()","options":["坚持党要管党","坚持党的先进性","坚持党的优良传统","坚持党的阶级基础"],"answer":"B"},{"id":"172","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民强调推进党的建设新的伟大工程,重点是加强:()","options":["党的群众基础","党的执政能力建设","党的阶级基础","党的组织建设"],"answer":"B"},{"id":"173","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民强调,领导干部要讲学习、讲政治、讲正气,其中前提是:()","options":["讲学习","讲政治","讲正气","讲原则"],"answer":"A"},{"id":"174","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民强调,领导干部要讲学习、讲政治、讲正气,其中核心是:()","options":["讲学习","讲政治","讲正气","讲原则"],"answer":"B"},{"id":"175","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民强调,加强和改进党的作风建设,核心问题是:()","options":["保持党的执政地位","坚持党的领导地位","保持党的利益不受影响与损害","保持党同人民群众的血肉联系"],"answer":"D"},{"id":"176","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民强调,我们党的最大的政治优势是:()","options":["党员数量众多,是世界第一大党","当今中国的执政党、领导党","从小到大,从弱变强,走过近百年的历程","密切联系群众"],"answer":"D"},{"id":"177","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民强调,我们党执政后最大的危险是:()","options":["能力不足","精神懈怠","脱离群众","消极腐败"],"answer":"C"},{"id":"178","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"我们党的立党之本、执政之基、力量之源是:()","options":["始终进行理论创新","始终与时代同进步,与世界同发展","始终做到\"三个代表\"","始终做到独立自主、自力更生"],"answer":"C"},{"id":"179","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"\"三个代表\"重要思想在邓小平理论的基础上,进一步,创造性地回答了,()","options":["什么是社会主义、怎样建设社会主义的问题","进行什么样的革命,怎样进行革命的问题","实现什么样的发展,怎样发展的问题","建设什么样的党、怎样建设党的问题"],"answer":"D"},{"id":"180","type":"single","chapter":"第七章 \"三个代表\"重要思想","stem":"江泽民在党的十五大报告中明确指出:依法治国,是党领导人民治理国家的()","options":["基本方略","基本路线","基本纲领","基本经验"],"answer":"A"},{"id":"181","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观所说的以人为本是:()","options":["以全体中国公民利益为本","以中国最广大人民的根本利益为本","以中国人民的所有利益和自由为本","以中华民族的利益为本"],"answer":"B"},{"id":"182","type":"single","chapter":"第八章 科学发展观","stem":"胡锦涛指出,我们推进发展的根本目的就是:()","options":["社会秩序稳定","保证党的执政地位","建立和谐世界","造福人民"],"answer":"D"},{"id":"183","type":"single","chapter":"第八章 科学发展观","stem":"全面协调可持续中的\"全面\"是指:()","options":["发展要有协调性、均衡性,各个方面、各个环节的发展要相互适应、相互促进","发展要有全面性、整体性,不仅经济发展,而且各个方面都要发展","发展要有持久性、连续性,不仅当前要发展,而且要保证长远发展","发展要有速度、效率、时间,不仅追求公平、正义、平衡"],"answer":"B"},{"id":"184","type":"single","chapter":"第八章 科学发展观","stem":"全面协调可持续中的\"协调\"是指:()","options":["发展要有协调性、均衡性,各个方面、各个环节的发展要相互适应、相互促进","发展要有全面性、整体性,不仅经济发展,而且各个方面都要发展","发展要有持久性、连续性,不仅当前要发展,而且要保证长远发展","发展要有速度、效率、时间,不仅追求公平、正义、平衡"],"answer":"A"},{"id":"185","type":"single","chapter":"第八章 科学发展观","stem":"全面协调可持续中的\"可持续\"是指:()","options":["发展要有协调性、均衡性,各个方面、各个环节的发展要相互适应、相互促进","发展要有全面性、整体性,不仅经济发展,而且各个方面都要发展","发展要有持久性、连续性,不仅当前要发展,而且要保证长远发展","发展要有速度、效率、时间,不仅追求公平、正义、平衡"],"answer":"C"},{"id":"186","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观强调,社会主义民主政治的本质和核心是:()","options":["人民当家作主","发展社会主义社会生产力","建立现代经济体系","实现人民愿望、满足人民需要、维护人民利益"],"answer":"A"},{"id":"187","type":"single","chapter":"第八章 科学发展观","stem":"胡锦涛强调,决定着中国特色社会主义发展方向是:()","options":["社会主义核心价值体系","社会主义市场经济体制","中国共产党的领导和执政","发展社会主义生产力,特别是先进生产力"],"answer":"A"},{"id":"188","type":"single","chapter":"第八章 科学发展观","stem":"胡锦涛这个重大判断,深刻总结了国内外社会主义建设的历史经验,深化了对社会主义本质的认识。()","options":["\"社会和谐是中国特色社会主义的本质属性。\"","\"社会主义核心价值体系是根源于民族优秀文化和社会主义先进文化并吸收人类文明成果发展起来的\"","\"每一个共产党员都要把人民放在心中最高位置,尊重人民主体地位,尊重人民首创精神,拜人民为师,\"","\"物质贫乏不是社会主义,精神空虚也不是社会主义。没有社会主义文化繁荣发展,就没有社会主义现代化\""],"answer":"A"},{"id":"189","type":"single","chapter":"第八章 科学发展观","stem":"()是马克思主义政党的本质属性,是马克思主义政党的生命所系、力量所在。","options":["先进性","阶级性","全民性","群众性"],"answer":"A"},{"id":"190","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观最鲜明的精神实质是:()","options":["解放思想、实事求是、与时俱进、求真务实坚持党的先进性","立党为公,执政为民","实事求是、群众路线、独立自主","真理性与实践性、科学性与开放性和历史性与时代性的统一"],"answer":"A"},{"id":"191","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观:()","options":["创造性地回答了什么是社会主义、怎样建设社会主义","创造性地建设什么样的党、怎样建设党的问题","创造性地回答了新形势下实现什么样的发展、怎样发展等重大问题","创造性地回答了新时代进行什么样的伟大革命、怎样进行伟大革命的问题"],"answer":"C"},{"id":"192","type":"single","chapter":"第八章 科学发展观","stem":"我们党的文件中第一次提出科学发展观是在:()","options":["《中共中央关于完善社会主义市场经济体制若干问题的决定》中","《中共中央关于加强党的执政能力建设的决定》中","《中共中央关于构建社会主义和谐社会若干重大问题的决定》中","《中共中央关于制定国民经济和社会发展第十一个五年规划的建议》中"],"answer":"A"},{"id":"193","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观的核心立场是:()","options":["全面发展","协调发展","以人为本","可持续发展"],"answer":"C"},{"id":"194","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观的第一要义是:()","options":["以人为本","稳定","改革","发展"],"answer":"D"},{"id":"195","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观的基本要求是:()","options":["以人为本","全面协调可持续","统筹兼顾","发展"],"answer":"B"},{"id":"196","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观的根本方法是:()","options":["以人为本","全面协调可持续","统筹兼顾","发展"],"answer":"C"},{"id":"197","type":"single","chapter":"第八章 科学发展观","stem":"坚持以人为本,最终是为了()","options":["实现社会主义现代化","实现人的全面发展","实现中华民族伟大复兴的中国梦","实现持久和平、共同繁荣的和谐世界"],"answer":"B"},{"id":"198","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观强调,推动经济持续健康发展,必须坚持的主题:()","options":["以人为本","科学发展","中国特色社会主义现代经济体系","人的全面发展"],"answer":"B"},{"id":"199","type":"single","chapter":"第八章 科学发展观","stem":"科学发展观强调,推动经济持续健康发展,必须坚持的主线:()","options":["以人为本","科学发展","加快转变经济发展方式","人的全面发展"],"answer":"C"},{"id":"200","type":"single","chapter":"第八章 科学发展观","stem":"在当代中国,坚持发展是硬道理的本质要求就是:()","options":["以人为本","全面协调可持续","统筹兼顾","坚持科学发展"],"answer":"D"}];
+
+const SUBJ = {"A卷":[{"q":"中国革命为什么能走农村包围城市、武装夺取政权的道路？","a":["中国革命必须走农村包围城市、武装夺取政权的道路，是由中国所处的时代特点和具体国情所决定的。一方面，中国内无民主，外无主权，中国革命的主要斗争形式只能是武装斗争，革命的主要组织形式必然是军队。另一方面，近代中国是一个农业大国，农民占全国人口的绝大多数，是无产阶级可靠的同盟军和革命的主力军。另一方面，党的领导非常非常重要，党非常重要。相当力量正是红军的存在，为农村革命根据地的创立、巩固和发展提供了坚实的后盾。党的领导的有力量及其政策的不错误，为农村革命根据地的建设和发展提供了重要的主观条件。"]},{"q":"中国社会主义改造的历史经验有哪些？","a":["第一，坚持社会主义工业化建设与社会主义改造同时并举。社会主义改造是围绕着社会主义工业化建设这个中心任务进行的。实践证明，坚持同时并举，对于保持社会稳定、促进生产力发展具有重要意义。","第二，采取积极引导、逐步过渡的方式。我国对农业、手工业和资本主义工商业的改造，都采取了区别对象、逐步过渡的方式。这种办法符合农民的特点和生产力状况。","第三，用和平方法进行改造。在我国的条件下，用和平的方法（即说服教育的方法）改变所有制。坚持用和平的办法，不仅保证了改造的顺利进行，而且维护了社会的稳定。"]},{"q":"如何调动一切积极因素为社会主义事业服务？","a":["第一，调动一切积极因素，尽可能地克服消极因素，并努力化消极因素为积极因素，是社会主义事业前进的现实需要。在社会主义事业的发展中，一般来说，积极因素是处于主导的、统治地位的，占有压倒的优势，这是社会主义事业不断前进的可靠保证。","第二，调动一切积极因素为社会主义事业服务，必须坚持中国共产党的领导。毛泽东多次强调：“领导我们事业的核心力量是中国共产党。”中国共产党是全中国人民的领导核心。","第三，调动一切积极因素为社会主义事业服务，必须发展社会主义民主政治。党的八大提出，要进一步扩大民主生活，开展反对官僚主义的斗争。毛泽东强调指出，我们的目标是想造成一个又有集中又有民主，又有纪律又有自由，生动活泼，那样一种政治局面。"]},{"q":"为什么说中国共产党始终代表最广大人民的根本利益？","a":["第一，人民是我们国家的主人，是决定我国前途和命运的根本力量，是历史真正的创造者。我们全部工作的出发点和落脚点就是不断实现好、维护好、发展好最广大人民的根本利益。","第二，我们党来自人民，根植于人民，服务于人民，一切为了群众，一切相信群众，一切依靠群众，我们党就能获得取之不尽的力量源泉。","第三，我们党始终坚持人民的利益高于一切，我们党进行的一切斗争，归根到底是为了最广大人民的根本利益，党的一切工作必须以最广大人民的根本利益为最高标准。"]},{"q":"如何理解全面协调可持续发展是科学发展观的基本要求？","a":["一方面，经过长期发展，我们积累了较为雄厚的物质基础条件，可以推进全面协调可持续发展上有更大的作为。另一方面，城乡区域发展不平衡，经济社会发展不协调，经济发展与人口资源环境不适应等问题更加突出的摆在了我们的面前，我们只有更加自觉地推进全面协调可持续发展，才能更好化解制约我国发展的各种因素。更好地推动我国发展进程，确保实现我国发展的战略目标。"]},{"q":"为什么要实行对外开放政策？","a":["第一，开放也是改革，对外开放是建设中国特色社会主义的一项基本国策，和改革一起成为新时期最鲜明的特征。","第二，实行对外开放是对中国经济发展停滞落后历史教训深刻总结的结果。邓小平反复强调：“任何国家要发达起来，闭关自守都不可能。我们吃过这个苦头，我们的老祖宗吃过这个苦头。”历史经验一再告诉我们，关起门来搞建设是不行的，把自己孤立于世界之外是不利的。只有实行对外开放，才能赶上时代，赶上当代世界的科技和经济发展水平。","第三，对外开放是对世界所有国家的开放，包括对发达国家的开放，也包括对发展中国家的开放；不仅是经济领域的开放，还包括科技、教育、文化等领域的开放。在实行对外开放过程中，一要正确对待资本主义社会创造的现代文明成果，大胆吸收和借鉴；二是要高度珍惜并坚决维护中国人民经过长期奋斗得来的独立自主权利。"]},{"q":"邓小平的社会主义市场经济理论的内涵。","a":["邓小平的社会主义市场经济理论具有丰富的内涵。","一是计划经济和市场经济不是划分社会制度的标志，计划经济不等于社会主义，市场经济也不等于资本主义。","二是计划和市场都是经济手段对经济活动的调节各有优劣，社会主义实行市场经济是要把两者优势结合起来。","三是市场经济作为资源配置手段本身不具有制度属性，可以和不同的社会制度结合，从而表现出不同的性质。"]}],"B卷":[{"q":"为什么说实事求是是毛泽东思想的精髓？","a":["实事求是是毛泽东思想的基本点，是毛泽东思想的精髓，实事求是就是一切从实际出发，理论联系实际，坚持在实践中检验真理和发展真理。","第二点，实事求是来源于马克思主义基本原理，贯穿于马克思主义中国化的全过程。","第三点，实事求是思想路线由毛泽东同志确立于民主革命时期，在党的历史实践上，它是生死抉择的准则，在党的各个历史时期，实事求是被利用到了极致。例如在遵义会议时期，正是由于党坚持了实事求是，才纠正了左倾教条主义错误，挽救了红军，挽救了党。在党的各个历史时期我们都是依靠实事求是取得了一些大成果，它是指导我们不断革命、建设和改革胜利的重要法宝。"]},{"q":"毛泽东思想的历史地位是什么？","a":["第一，马克思主义中国化时代化的第一个重大理论成果。毛泽东是马克思主义中国化时代化的伟大开拓者，是毛泽东思想的主要创立者。他明确提出了马克思主义中国化时代化的重大任务，并为此进行了艰苦的探索。","第二，中国革命和建设的科学指南。在毛泽东思想指引下，我们党领导全国人民，找到了一条新民主主义革命的正确道路，完成了反帝反封建的任务。毛泽东思想是被实践证明了的关于中国革命和建设的正确的理论原则和经验总结。","第三，中国共产党和中国人民宝贵的精神财富。毛泽东思想永远是我们全党、全军、全国各族人民的最宝贵的精神财富。毛泽东追求和倡导的实事求是的思想路线、全心全意为人民服务的根本宗旨等，依然是中国人民不断奋进的强大精神动力。"]},{"q":"新民主主义革命的基本纲领。","a":["第一，新民主主义革命的政治纲领是推翻帝国主义和封建主义的统治，建立一个无产阶级领导的，以工农联盟为基础的各革命阶级联合专政的、新民主主义的共和国。","第二，新民主主义的经济纲领是没收封建地主阶级的土地归农民所有，没收官僚资产阶级的垄断资本归新民主主义的国家所有，保护民族工商业。","第三，新民主主义文化就是无产阶级领导的人民大众的反帝反封建的文化，即民族的、科学的、大众的文化。"]},{"q":"三大法宝的含义及三者的关系。","a":["总述：统一战线，武装斗争，党的建设，是党在中国革命中战胜敌人的三个重要法宝。","第一，统一战线是无产阶级政党策略思想的重要内容。建立最广泛的统一战线，首先是由中国半殖民地半封建社会的阶级状况所决定的。","第二，武装斗争是中国革命的特点和优点之一。由于反动派总是凭借暴力镇压人民，革命人民只有以武装的革命反对武装的反革命。","第三，中国共产党要领导革命取得胜利，必须不断加强党的思想建设、组织建设和作风建设。由于各种非无产阶级思想必然反映到党内来，必须把思想建设放在首位。","最后，关于三者的关系：统一战线和武装斗争是中国革命的两个基本特点，是战胜敌人的两个基本武器。统一战线是实行武装斗争的统一战线。武装斗争是统一战线的中心支柱，党的组织则是掌握统一战线和武装斗争这两个武器以实行对敌冲锋陷阵的英勇战士。"]},{"q":"党在过渡时期的总路线。","a":["党在过渡时期的总路线主要内容被概括为一化三改。一化即社会主义工业化，三改即对个体农业、手工业、资本主义工商业的社会主义改造。它们之间相互联系，不可分离，可以比喻为鸟的主体和两翼。其中一化是主体，三改是两翼，二者相辅相成，相互促进。这是一条社会主义建设和社会主义改造同时并举的路线，体现了社会主义工业化和社会主义改造的紧密结合，体现了解放生产力与发展生产力，变革生产关系与发展生产力的有机统一。"]},{"q":"解放思想实事求是，对推动中国特色社会主义事业的意义。","a":["第一，解放思想实事求是，有力推动和保证了拨乱反正的进行。","第二，解放思想实事求是，破除了僵化的社会主义模式观念，坚持走自己的路。","第三，解放思想实事求是，一切从社会主义初级阶段的实际出发。","第四，坚持解放思想实事求是，坚持以三个有利于作为检验一切工作是非得失的根本标准，破除了在改革开放进程中离开发展生产力抽象谈论姓社姓资的思维定势，把我国的改革开放和现代化建设推进到一个新的阶段。"]},{"q":"邓小平理论的历史地位是什么？","a":["第一，马克思列宁主义、毛泽东思想的继承和发展。邓小平理论是马克思列宁主义基本原理同当代中国实际和时代特征相结合的产物。它用一系列独创性的思想、观点，继承、丰富和发展了马克思列宁主义、毛泽东思想。","第二，中国特色社会主义理论体系的开篇之作。邓小平理论紧紧抓住“什么是社会主义、怎样建设社会主义”这个基本问题，第一次比较系统地初步回答了建设中国特色社会主义的一系列基本问题。","第三，改革开放和社会主义现代化建设的科学指南。邓小平理论指导了改革开放的伟大实践。在它的指导下，改革开放后的中国发生天翻地覆的变化，迎来了思想的解放、经济的发展。"]}]};
+const BANK = DATA;
+const byId = new Map(BANK.map(q => [q.id, q]));
+const CHAPTERS = [...new Set(BANK.map(q => q.chapter))];
+const LETTERS = "ABCDE";
+
+/* ================= 存储 ================= */
+const K = {cfg:"mg_cfg_v1", stats:"mg_stats_v1", wrong:"mg_wrong_v1", fav:"mg_fav_v1", sess:"mg_sess_v1"};
+const LS = {
+  get(k, d){ try{ const s = localStorage.getItem(k); return s == null ? d : JSON.parse(s); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+let CFG = Object.assign({type:"all", order:"shuffle", limit:0, auto:true, optorder:"orig", theme:"light"}, LS.get(K.cfg, {}));
+let STATS = LS.get(K.stats, {});     // {id: {n, k}}
+let WRONG = LS.get(K.wrong, {});     // {id: {n, t}}
+let FAV   = LS.get(K.fav, []);       // [id]
+let S = null, tick = null, toastT = null;
+
+/* ================= 工具 ================= */
+const $  = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = a => a.slice().sort().join("");
+const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; } return a; };
+const fmt = s => String(Math.floor(s/60)).padStart(2,"0") + ":" + String(Math.floor(s%60)).padStart(2,"0");
+const chapterOf = id => (byId.get(id) || {}).chapter;
+const isMulti = q => q.type === "multi";
+
+const RM = () => !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+let lastTap = null;
+document.addEventListener("pointerdown", e => { lastTap = {x: e.clientX, y: e.clientY, t: Date.now()}; }, true);
+
+/* 完成反馈：粒子爆发（交互一），放完即清理节点 */
+function burst(anchor){
+  if(RM() || !anchor || !anchor.animate) return;
+  const card = anchor.closest(".qcard");
+  if(!card) return;
+  const cr = card.getBoundingClientRect(), ar = anchor.getBoundingClientRect();
+  const cx = ar.left - cr.left + ar.width / 2, cy = ar.top - cr.top + ar.height / 2;
+  const colors = ["var(--ok)", "var(--accent)", "var(--gold)"];
+  for(let i = 0; i < 8; i++){
+    const d = document.createElement("span");
+    const sz = 4 + Math.random() * 4;
+    d.className = "burst-dot";
+    d.style.cssText = `left:${cx}px;top:${cy}px;width:${sz}px;height:${sz}px;background:${colors[i % 3]}`;
+    card.appendChild(d);
+    const ang = (Math.PI * 2 * i) / 8 + Math.random() * .5;
+    const dist = 30 + Math.random() * 30;
+    const anim = d.animate([
+      {transform: "translate(-50%,-50%) scale(1)", opacity: 1},
+      {transform: `translate(${Math.cos(ang) * dist - sz / 2}px,${Math.sin(ang) * dist - sz / 2}px) scale(.4)`, opacity: 0}
+    ], {duration: 480 + Math.random() * 120, easing: "cubic-bezier(.17,.67,.35,1)"});
+    anim.onfinish = () => d.remove();
+    anim.oncancel = () => d.remove();
+  }
+}
+
+/* 数字补间（交互二：数字不跳数） */
+function tweenNum(el, to, suffix){
+  if(!el) return;
+  suffix = suffix || "";
+  if(RM()){ el.textContent = to + suffix; return; }
+  const dur = 520, t0 = performance.now();
+  (function step(now){
+    const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(to * e) + suffix;
+    if(p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+/* 圆形扩散转场（交互六）：从最近一次点击点展开新页面 */
+let revealArmed = false;
+function armReveal(){ revealArmed = true; }
+function playReveal(el){
+  return; /* 已停用：clip-path 扩散动画在部分 WebView 中会卡住并裁掉整屏内容 */
+  if(!el || RM() || !el.animate || !lastTap || Date.now() - lastTap.t > 600) return;
+  const r = el.getBoundingClientRect();
+  const x = lastTap.x - r.left, y = lastTap.y - r.top;
+  const rad = Math.hypot(Math.max(x, r.width - x), Math.max(y, r.height - y)) + 40;
+  try{
+    el.animate([
+      {clipPath: `circle(0px at ${x}px ${y}px)`},
+      {clipPath: `circle(${rad}px at ${x}px ${y}px)`}
+    ], {duration: 450, easing: "cubic-bezier(.22,.9,.3,1)"});
+  }catch(e){}
+}
+
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove("on"), 1700);
+}
+
+/* ================= 主题 ================= */
+function applyTheme(){
+  document.documentElement.setAttribute("data-theme", CFG.theme);
+  $$("[data-theme-toggle]").forEach(b => { b.textContent = CFG.theme === "dark" ? "☀" : "☾"; });
+}
+function toggleTheme(){
+  CFG.theme = CFG.theme === "dark" ? "light" : "dark";
+  LS.set(K.cfg, CFG); applyTheme();
+}
+
+/* ================= 设置 ================= */
+function syncChips(){
+  $$("#settings .chip").forEach(c => {
+    const k = c.dataset.k, v = c.dataset.v;
+    const on = k === "auto" ? (CFG.auto ? "1" : "0") === v : String(CFG[k]) === v;
+    c.classList.toggle("on", on);
+  });
+}
+function setCfg(k, v){
+  if(k === "limit") CFG.limit = Number(v);
+  else if(k === "auto") CFG.auto = v === "1";
+  else CFG[k] = v;
+  LS.set(K.cfg, CFG); syncChips();
+}
+
+/* ================= 页面切换 ================= */
+function syncVH(){
+  let h = window.innerHeight || 0;
+  if(!h && window.visualViewport) h = window.visualViewport.height || 0;
+  if(!h || h < 320) return;
+  document.documentElement.style.setProperty("--vh", (h * 0.01) + "px");
+}
+
+function diagnoseScreen(name){
+  const scr = document.getElementById("screen-" + name);
+  if(!scr || !scr.classList.contains("active")) return;
+  const card = scr.querySelector(".qcard");
+  const info = ["screen=" + name, "lock=" + document.body.classList.contains("quiz-lock")];
+  info.push("scrH=" + Math.round(scr.getBoundingClientRect().height));
+  info.push("vhVar=" + (getComputedStyle(document.documentElement).getPropertyValue("--vh") || "未设置"));
+  info.push("innerH=" + window.innerHeight);
+  if(!card){
+    info.push("card=不存在");
+    if(name === "quiz" && typeof S !== "undefined" && S) info.push("queue=" + (S.queue || []).length + " idx=" + S.idx + " label=" + S.label);
+    if(name === "subj" && typeof SJ !== "undefined" && SJ) info.push("sjQueue=" + SJ.queue.length + " i=" + SJ.i);
+  } else {
+    const r = card.getBoundingClientRect();
+    info.push("cardH=" + Math.round(r.height) + " cardTop=" + Math.round(r.top));
+    if(r.height >= 80) return;
+  }
+  window.__errs.push(info.join(" "));
+  if(window.__showErr) window.__showErr();
+}
+
+function healScreen(name){
+  const scr = document.getElementById("screen-" + name);
+  if(!scr || !scr.classList.contains("active")) return;
+  try{
+    const cs = getComputedStyle(scr);
+    if(cs.clipPath && cs.clipPath !== "none") scr.style.clipPath = "none";
+    if(cs.opacity === "0") scr.style.opacity = "1";
+    const c0 = scr.querySelector(".qcard");
+    if(c0 && getComputedStyle(c0).opacity === "0") c0.style.opacity = "1";
+  }catch(e){}
+  window.scrollTo(0, 0);
+  let card = scr.querySelector(".qcard");
+  let bad = !card || card.getBoundingClientRect().height < 80;
+  if(bad){
+    if(name === "quiz" && typeof S !== "undefined" && S && typeof renderQuiz === "function") renderQuiz();
+    if(name === "subj" && typeof SJ !== "undefined" && SJ && typeof renderSubj === "function") renderSubj();
+    setTimeout(() => {
+      const c2 = scr.querySelector(".qcard");
+      if(!c2 || c2.getBoundingClientRect().height < 80){
+        window.__errs.push("自愈失败 screen=" + name +
+          " lock=" + document.body.classList.contains("quiz-lock") +
+          " scrH=" + Math.round(scr.getBoundingClientRect().height) +
+          " bodyHTML=" + ((name === "quiz" ? document.getElementById("quizBody") : document.getElementById("subjBody")) || {}).innerHTML?.length +
+          " innerH=" + window.innerHeight + " scrollY=" + window.scrollY);
+        if(window.__showErr) window.__showErr();
+      }
+    }, 500);
+  }
+}
+
+function showScreen(name){
+  if(name === "quiz" || name === "subj"){
+    setTimeout(() => diagnoseScreen(name), 700);
+    setTimeout(() => healScreen(name), 900);
+    syncVH();
+    requestAnimationFrame(syncVH);
+    setTimeout(syncVH, 280);
+  }
+  document.body.classList.toggle("quiz-lock", name === "quiz" || name === "subj");
+  const pal = document.getElementById("palette");
+  if(pal) pal.classList.remove("on");
+  $$(".screen").forEach(s => s.classList.toggle("active", s.id === "screen-" + name));
+  window.scrollTo(0, 0);
+  if(revealArmed){
+    revealArmed = false;
+    playReveal(document.getElementById("screen-" + name));
+  }
+}
+
+/* ================= 首页 ================= */
+function renderHome(){
+  const total = BANK.length;
+  const singles = BANK.filter(q => q.type === "single").length;
+  $("#heroMeta").textContent = `共 ${total} 题 · 单选 ${singles} · 多选 ${total - singles} · ${CHAPTERS.length} 个章节`;
+
+  const ids = Object.keys(STATS);
+  let at = 0, ok = 0;
+  ids.forEach(id => { at += STATS[id].n; ok += STATS[id].k; });
+  tweenNum($("#statSeen"), ids.length);
+  if(at) tweenNum($("#statAcc"), Math.round(ok / at * 100), "%"); else $("#statAcc").textContent = "—";
+  tweenNum($("#statProg"), Math.round(ids.length / total * 100), "%");
+  $("#statBar").style.width = (ids.length / total * 100) + "%";
+
+  $("#nWrong").textContent = Object.keys(WRONG).length;
+  $("#nFav").textContent = FAV.length;
+
+  const saved = LS.get(K.sess, null);
+  const box = $("#resumeBox");
+  if(saved && !saved.finished && saved.queue && saved.queue.length){
+    const done = Object.values(saved.rec || {}).filter(r => r.submitted).length;
+    box.innerHTML = `
+      <div class="resume">
+        <div class="rt">
+          <b>继续上次练习</b>
+          <span>${esc(saved.label || "练习")} · 已答 ${done} / ${saved.queue.length} 题</span>
+        </div>
+        <button class="btn primary sm" id="resumeBtn">继续</button>
+      </div>`;
+    $("#resumeBtn").onclick = () => {
+      saved.queue = (saved.queue || []).filter(id => byId.has(id));
+      if(!saved.queue.length){ LS.set(K.sess, null); renderHome(); return toast("上次练习数据已失效"); }
+      saved.idx = Math.min(saved.idx || 0, saved.queue.length - 1);
+      if(!saved.rec) saved.rec = {};
+      S = saved;
+      S.stamp = Date.now();
+      S.elapsed = saved.elapsed || 0;
+      startTimer(); showScreen("quiz"); renderQuiz();
+    };
+  } else {
+    box.innerHTML = "";
+  }
+}
+
+/* ================= 章节列表 ================= */
+function renderChapters(){
+  const list = $("#chapterList");
+  $("#chSub").textContent = CFG.type === "all" ? "全部题型" : (CFG.type === "single" ? "仅单项选择题" : "仅多项选择题");
+  list.innerHTML = CHAPTERS.map(ch => {
+    const qs = BANK.filter(q => q.chapter === ch);
+    const pool = qs.filter(q => CFG.type === "all" || q.type === CFG.type);
+    const s = qs.filter(q => q.type === "single").length;
+    const m = qs.length - s;
+    const done = qs.filter(q => STATS[q.id]).length;
+    let n = 0, k = 0;
+    qs.forEach(q => { if(STATS[q.id]){ n += STATS[q.id].n; k += STATS[q.id].k; } });
+    const wrongN = qs.filter(q => WRONG[q.id]).length;
+    const pct = qs.length ? Math.round(done / qs.length * 100) : 0;
+    return `
+      <div class="chcard" data-ch="${esc(ch)}">
+        <div class="ch-left">
+          <div class="ch-name">${esc(ch)}</div>
+          <div class="ch-meta">共 ${qs.length} 题 · 单选 ${s} · 多选 ${m}</div>
+          <div class="ch-prog"><i style="width:${pct}%"></i></div>
+          <div class="ch-hint">已练 ${done} / ${qs.length}${n ? ` · 正确率 ${Math.round(k / n * 100)}%` : ""}${pool.length !== qs.length ? ` · 当前筛选 ${pool.length} 题` : ""}</div>
+        </div>
+        <div class="ch-right">
+          <button class="mini" data-act="memo" data-ch="${esc(ch)}">背题</button>
+          ${wrongN ? `<button class="mini hot" data-act="wrong" data-ch="${esc(ch)}">错题 ${wrongN}</button>` : ""}
+          <span class="go">开始 →</span>
+        </div>
+      </div>`;
+  }).join("");
+
+  $$("#chapterList .ch-prog i").forEach(bar => {
+    const w = bar.style.width;
+    bar.style.width = "0%";
+    requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = w; }));
+  });
+
+  $$("#chapterList .chcard").forEach(card => {
+    card.onclick = e => {
+      const mb = e.target.closest('[data-act="memo"]');
+      const wb = e.target.closest('[data-act="wrong"]');
+      const ch = card.dataset.ch;
+      if(mb){
+        e.stopPropagation();
+        startSession({mode:"chapter", chapter:ch, memo:true, label:ch + " · 背题"});
+        return;
+      }
+      if(wb){
+        e.stopPropagation();
+        const ids = BANK.filter(q => q.chapter === ch && WRONG[q.id]).map(q => q.id);
+        if(!ids.length) return toast("本章暂无错题");
+        startSession({mode:"chapter", chapter:ch, ids, label:ch + " · 错题"});
+        return;
+      }
+      startSession({mode:"chapter", chapter:ch, label:ch});
+    };
+  });
+}
+
+/* ================= 会话 ================= */
+function startTimer(){
+  clearInterval(tick);
+  S.stamp = Date.now();
+  tick = setInterval(() => {
+    const el = $("#qTimer");
+    if(el && S) el.textContent = fmt(elapsedSec());
+  }, 500);
+}
+function elapsedSec(){
+  if(!S) return 0;
+  return (S.elapsed || 0) + Math.floor((Date.now() - (S.stamp || Date.now())) / 1000);
+}
+function saveSession(){
+  if(!S) return;
+  const snap = Object.assign({}, S, {elapsed: elapsedSec(), stamp: Date.now()});
+  LS.set(K.sess, snap);
+}
+
+function startSession(opts){
+  let pool;
+  if(opts.ids) pool = opts.ids.map(id => byId.get(id)).filter(Boolean);
+  else pool = BANK.filter(q => (!opts.chapter || q.chapter === opts.chapter) &&
+                               (CFG.type === "all" || q.type === CFG.type));
+  if(!pool.length) return toast("该范围下没有题目");
+
+  if(CFG.order === "shuffle") shuffle(pool);
+  else pool.sort((a, b) => Number(a.id) - Number(b.id));
+  if(!opts.ids && CFG.limit > 0 && pool.length > CFG.limit) pool = pool.slice(0, CFG.limit);
+
+  let label = opts.label || "练习";
+  if(opts.mode === "mixed" && !opts.ids) label = "混合练习";
+  const optOrder = {};
+  pool.forEach(q => {
+    const ord = q.options.map((_, i) => i);
+    if(CFG.optorder === "shuffle") shuffle(ord);
+    optOrder[q.id] = ord;
+  });
+  S = {
+    mode: opts.mode, chapter: opts.chapter || null, label,
+    queue: pool.map(q => q.id), idx: 0, rec: {}, optOrder,
+    elapsed: 0, stamp: Date.now(), finished: false, startedAt: Date.now(),
+    memo: !!opts.memo,
+    replay: {mode: opts.mode, chapter: opts.chapter || null, ids: opts.ids || null, label, memo: !!opts.memo}
+  };
+  armReveal();
+  saveSession();
+  startTimer();
+  showScreen("quiz");
+  renderQuiz();
+}
+function curQ(){ return byId.get(S.queue[S.idx]); }
+
+/* ================= 答题 ================= */
+function toggleOpt(k){
+  if(S && S.memo) return;
+  const q = curQ();
+  let r = S.rec[q.id];
+  if(r && r.submitted) return;
+  if(!r) r = S.rec[q.id] = {sel: [], submitted: false};
+
+  if(!isMulti(q)){
+    r.sel = [k];
+    if(CFG.auto){ submitCurrent(); return; }
+  } else {
+    const i = r.sel.indexOf(k);
+    if(i >= 0) r.sel.splice(i, 1); else r.sel.push(k);
+  }
+  saveSession();
+  renderQuiz();
+}
+
+function memoFinish(){
+  clearInterval(tick); S.finished = true; saveSession();
+  showScreen("home"); renderHome(); toast("本组已背完");
+}
+
+function submitCurrent(){
+  const q = curQ();
+  const r = S.rec[q.id];
+  if(!r || !r.sel.length || r.submitted) return;
+  r.submitted = true;
+  r.ok = norm(r.sel) === q.answer;
+
+  const st = STATS[q.id] || (STATS[q.id] = {n: 0, k: 0});
+  st.n++; if(r.ok) st.k++;
+  LS.set(K.stats, STATS);
+
+  if(r.ok){
+    if(WRONG[q.id]){ delete WRONG[q.id]; LS.set(K.wrong, WRONG); }
+  } else {
+    const w = WRONG[q.id] || (WRONG[q.id] = {n: 0, t: 0});
+    w.n++; w.t = Date.now();
+    LS.set(K.wrong, WRONG);
+  }
+  saveSession();
+  renderQuiz();
+  const fbEl = $("#quizBody .fb");
+  if(fbEl){
+    if(r.ok){
+      fbEl.classList.add("celebrate");
+      burst(fbEl.querySelector(".fb-icon"));
+    } else {
+      fbEl.classList.add("shake-it");
+    }
+  }
+}
+
+function go(i){
+  if(i < 0 || i >= S.queue.length) return;
+  S.idx = i;
+  saveSession();
+  renderQuiz();
+}
+function next(){
+  if(S.idx >= S.queue.length - 1) finish();
+  else go(S.idx + 1);
+}
+
+function finish(){
+  if(!S) return;
+  clearInterval(tick);
+  S.elapsed = elapsedSec();
+  S.stamp = Date.now();
+  S.finished = true;
+  LS.set(K.sess, S);
+  showResult();
+}
+
+function toggleFav(){
+  const q = curQ();
+  const i = FAV.indexOf(q.id);
+  if(i >= 0){ FAV.splice(i, 1); toast("已取消收藏"); }
+  else { FAV.push(q.id); toast("已加入收藏"); }
+  LS.set(K.fav, FAV);
+  renderQuiz();
+}
+
+/* ================= 渲染答题 ================= */
+function renderQuiz(){
+  const q = curQ();
+  if(!q){
+    S = null;
+    LS.set(K.sess, null);
+    showScreen("home");
+    renderHome();
+    toast("上次练习数据已失效，已返回首页");
+    return;
+  }
+  if(!S.rec) S.rec = {};
+  const r = S.rec[q.id];
+  const sub = !!(r && r.submitted);
+  const sel = r ? r.sel : [];
+  const ans = q.answer.split("");
+  const total = S.queue.length;
+
+  $("#qzLabel").textContent = S.label || "练习";
+  $("#qzProgress").textContent = (S.idx + 1) + " / " + total;
+  $("#qbarFill").style.width = ((S.idx + 1) / total * 100) + "%";
+  const tEl = $("#qTimer"); if(tEl) tEl.textContent = fmt(elapsedSec());
+
+  const ord = (S.optOrder && S.optOrder[q.id]) || q.options.map((_, i) => i);
+  const opts = ord.map((oi, di) => {
+    const text = q.options[oi];
+    const k = LETTERS[oi];
+    const isAns = ans.includes(k);
+    const isSel = sel.includes(k);
+    let cls = "";
+    if(S.memo){
+      cls = isAns ? "correct" : "dim";
+    } else if(sub){
+      if(isAns) cls = "correct";
+      else if(isSel) cls = "wrong";
+      else cls = "dim";
+    } else if(isSel) cls = "sel";
+    const mark = (sub || S.memo)
+      ? (isAns ? '<span class="mk mk-ok">✓</span>' : (isSel ? '<span class="mk mk-bad">✗</span>' : ""))
+      : "";
+    return `<button class="opt ${cls}" data-k="${k}" ${sub || S.memo ? "disabled" : ""}>
+              <span class="opt-key">${LETTERS[di]}</span>
+              <span class="opt-text">${esc(text)}</span>${mark}
+            </button>`;
+  }).join("");
+
+  let fb = "";
+  if(S.memo){
+    fb = `<div class="fb ok">
+            <div class="fb-icon">答</div>
+            <div class="fb-body">
+              <div class="fb-title">背题模式 · 本题答案</div>
+              <div class="fb-line">正确答案 <span class="ansbox">${q.answer.split("").join(" ")}</span></div>
+            </div>
+          </div>`;
+  } else if(sub){
+    const missed = ans.filter(k => !sel.includes(k));
+    const extra = sel.filter(k => !ans.includes(k));
+    let title, cls;
+    if(r.ok){ title = "回答正确"; cls = "ok"; }
+    else if(isMulti(q) && missed.length && !extra.length){ title = "漏选"; cls = "bad"; }
+    else if(isMulti(q) && extra.length && !missed.length){ title = "多选"; cls = "bad"; }
+    else { title = "回答错误"; cls = "bad"; }
+    fb = `<div class="fb ${cls}">
+            <div class="fb-icon">${cls === "ok" ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 10 18 20 6"/></svg>' : "!"}</div>
+            <div class="fb-body">
+              <div class="fb-title">${title}</div>
+              <div class="fb-line">正确答案 <span class="ansbox">${q.answer.split("").join(" ")}</span>
+                <span class="your">你的答案 <b>${sel.length ? sel.slice().sort().join("") : "—"}</b></span></div>
+            </div>
+          </div>`;
+  }
+
+  const last = S.idx === total - 1;
+  let actions = "";
+  if(S.memo){
+    actions = `<button class="btn ghost" data-act="prev" ${S.idx === 0 ? "disabled" : ""}>← 上一题</button>
+               <span class="spacer"></span>
+               <button class="btn primary" data-act="next">${last ? "完成背诵" : "下一题 →"}</button>`;
+  } else
+  if(!sub){
+    if(isMulti(q) || !CFG.auto){
+      actions = `<button class="btn ghost" data-act="prev" ${S.idx === 0 ? "disabled" : ""}>← 上一题</button>
+                 <span class="spacer"></span>
+                 <button class="btn ghost" data-act="skip">跳过</button>
+                 <button class="btn primary" data-act="submit" ${sel.length ? "" : "disabled"}>提交答案</button>`;
+    } else {
+      actions = `<button class="btn ghost" data-act="prev" ${S.idx === 0 ? "disabled" : ""}>← 上一题</button>
+                 <span class="spacer"></span>
+                 <button class="btn ghost" data-act="skip">跳过</button>`;
+    }
+  } else {
+    actions = `<button class="btn ghost" data-act="prev" ${S.idx === 0 ? "disabled" : ""}>← 上一题</button>
+               <span class="spacer"></span>
+               <button class="btn primary" data-act="next">${last ? "完成练习" : "下一题 →"}</button>`;
+  }
+
+  const multiHint = S.memo
+    ? `<span class="hint-inline">背题模式 · 正确答案已用 ✓ 标出 · 左右滑动翻题</span>`
+    : isMulti(q)
+    ? `<span class="hint-inline">多项选择 · 选好后点击提交</span>`
+    : (CFG.auto ? `<span class="hint-inline">单项选择 · 点选即判分</span>` : `<span class="hint-inline">单项选择 · 选好后点击提交</span>`);
+
+  $("#quizBody").innerHTML = `
+    <div class="qcard">
+      <div class="qmeta">
+        <span class="tagnum"># ${q.id}</span>
+        <span class="tag ${q.type}">${isMulti(q) ? "多选" : "单选"}</span>
+        <span class="tag qch" title="${esc(q.chapter)}">${esc(q.chapter)}</span>
+        <button class="star ${FAV.includes(q.id) ? "on" : ""}" data-act="fav" title="收藏">${FAV.includes(q.id) ? "★" : "☆"}</button>
+      </div>
+      <p class="qstem">${esc(q.stem)}</p>
+      <div class="opts">${opts}</div>
+      ${fb}
+      <div class="qa">${actions}</div>
+      <p class="hint">${multiHint}<span class="kbdhint">快捷键 <kbd>A</kbd><kbd>B</kbd><kbd>C</kbd><kbd>D</kbd> 选择 · <kbd>Enter</kbd> 提交/下一题 · <kbd>←</kbd><kbd>→</kbd> 切换</span></p>
+    </div>`;
+
+  $$("#quizBody .opt").forEach(b => b.onclick = () => toggleOpt(b.dataset.k));
+  $$("#quizBody [data-act]").forEach(b => {
+    b.onclick = () => {
+      const a = b.dataset.act;
+      if(a === "prev") go(S.idx - 1);
+      else if(a === "next"){
+        if(S.memo && S.idx >= S.queue.length - 1) memoFinish();
+        else next();
+      }
+      else if(a === "skip") next();
+      else if(a === "submit") submitCurrent();
+      else if(a === "fav") toggleFav();
+    };
+  });
+}
+</script>
+<script>
+"use strict";
+/* ================= 答题卡 ================= */
+function openPalette(){
+  $("#pgrid").innerHTML = S.queue.map((id, i) => {
+    const r = S.rec[id];
+    let cls = "";
+    if(r && r.submitted) cls = r.ok ? "ok" : "bad";
+    return `<button class="pcell ${cls} ${i === S.idx ? "cur" : ""}" data-i="${i}">${id}</button>`;
+  }).join("");
+  $("#palette").classList.add("on");
+  const cur = $("#pgrid .pcell.cur");
+  if(cur) cur.scrollIntoView({block: "center"});
+}
+function closePalette(){ $("#palette").classList.remove("on"); }
+
+/* ================= 报告 ================= */
+function showResult(){
+  const total = S.queue.length;
+  let answered = 0, ok = 0;
+  const byCh = {};
+  S.queue.forEach(id => {
+    const q = byId.get(id), r = S.rec[id];
+    const c = byCh[q.chapter] || (byCh[q.chapter] = {n: 0, ok: 0});
+    c.n++;
+    if(r && r.submitted){ answered++; if(r.ok){ ok++; c.ok++; } }
+  });
+  const pct = total ? Math.round(ok / total * 100) : 0;
+  const wrongIds = S.queue.filter(id => { const r = S.rec[id]; return r && r.submitted && !r.ok; });
+
+  const C = 2 * Math.PI * 52;
+  const color = pct >= 80 ? "var(--ok)" : (pct >= 60 ? "var(--gold)" : "var(--bad)");
+
+  $("#rsSub").textContent = `${S.label || "练习"} · 用时 ${fmt(S.elapsed || 0)}`;
+
+  $("#resultBody").innerHTML = `
+    <div class="scorecard">
+      <div class="ringwrap">
+        <svg width="140" height="140" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="10"></circle>
+          <circle cx="60" cy="60" r="52" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="${pct > 0 ? "round" : "butt"}"
+                  stroke-dasharray="${(C * pct / 100).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 60 60)"
+                  style="transition:stroke-dasharray .6s ease"></circle>
+        </svg>
+        <div class="ringtext"><b>${pct}</b><span>得分</span></div>
+      </div>
+      <div class="scorestats">
+        <div><b>${ok}</b><span>答对</span></div>
+        <div><b>${answered - ok}</b><span>答错</span></div>
+        <div><b>${total - answered}</b><span>未作答</span></div>
+        <div><b>${total}</b><span>总题数</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="card-t">章节表现</h3>
+      ${Object.keys(byCh).map(ch => {
+        const c = byCh[ch];
+        const p = c.n ? Math.round(c.ok / c.n * 100) : 0;
+        return `<div class="chrow">
+          <span class="cn">${esc(ch)}</span>
+          <span class="cb"><i style="width:${p}%"></i></span>
+          <span class="cs">${c.ok}/${c.n}</span>
+        </div>`;
+      }).join("")}
+    </div>
+
+    ${wrongIds.length ? `
+    <div class="card">
+      <h3 class="card-t">本次错题 · ${wrongIds.length} <span style="font-weight:400;font-size:12px;color:var(--muted)">（点击题目展开选项）</span></h3>
+      ${wrongIds.map(id => {
+        const q = byId.get(id);
+        return `<div class="list-item" data-id="${id}">
+          <div class="li-top"><span class="tagnum"># ${q.id}</span>
+            <span class="tag ${q.type}">${isMulti(q) ? "多选" : "单选"}</span>
+            <span class="tag">${esc(q.chapter)}</span></div>
+          <div class="li-stem">${esc(q.stem)}</div>
+          <div class="li-ans">正确答案 <b>${q.answer.split("").join(" ")}</b></div>
+          <div class="pv-opts" hidden>${q.options.map((t, i) => {
+            const k = LETTERS[i];
+            const on = q.answer.includes(k);
+            return `<div class="pv-opt ${on ? "ok" : ""}"><span class="k">${k}</span><span>${esc(t)}</span></div>`;
+          }).join("")}</div>
+        </div>`;
+      }).join("")}
+    </div>` : ""}
+
+    <div class="qa wrap" style="margin-top:18px">
+      <button class="btn ghost" data-r="home">返回首页</button>
+      <span class="spacer"></span>
+      <button class="btn ghost" data-r="again">再练一次</button>
+      <button class="btn primary" data-r="redo" ${wrongIds.length ? "" : "disabled"}>重做错题${wrongIds.length ? " (" + wrongIds.length + ")" : ""}</button>
+    </div>`;
+
+  (function(){
+    const ring = $("#resultBody .ringwrap circle:nth-child(2)");
+    if(ring && !RM()){
+      const target = ring.getAttribute("stroke-dasharray");
+      ring.style.transition = "none";
+      ring.setAttribute("stroke-dasharray", "0 " + C.toFixed(1));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        ring.style.transition = "stroke-dasharray .7s cubic-bezier(.22,.9,.3,1)";
+        ring.setAttribute("stroke-dasharray", target);
+      }));
+    }
+    const big = $("#resultBody .ringtext b");
+    if(big) tweenNum(big, pct);
+    $$("#resultBody .chrow .cb i").forEach(bar => {
+      const w = bar.style.width;
+      bar.style.width = "0%";
+      requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = w; }));
+    });
+  })();
+
+  $$("#resultBody .list-item").forEach(el => {
+    el.onclick = () => {
+      el.classList.toggle("open");
+      const pv = el.querySelector(".pv-opts");
+      if(pv) pv.hidden = !el.classList.contains("open");
+    };
+  });
+  $$("#resultBody [data-r]").forEach(b => {
+    b.onclick = () => {
+      const a = b.dataset.r;
+      if(a === "home"){ showScreen("home"); renderHome(); }
+      else if(a === "again"){
+        const p = S.replay || {};
+        startSession({mode: p.mode || "mixed", chapter: p.chapter || null, ids: p.ids || null, label: p.label, memo: !!p.memo});
+      }
+      else if(a === "redo") startSession({mode: S.mode, chapter: S.chapter, ids: wrongIds, label: (S.label || "练习") + " · 错题重做"});
+    };
+  });
+  showScreen("result");
+}
+
+/* ================= 错题本 / 收藏夹 ================= */
+function qPreviewHTML(q, extra){
+  return `<div class="list-item" data-id="${q.id}">
+      <div class="li-top">
+        <span class="tagnum"># ${q.id}</span>
+        <span class="tag ${q.type}">${isMulti(q) ? "多选" : "单选"}</span>
+        <span class="tag">${esc(q.chapter)}</span>
+        ${extra || ""}
+      </div>
+      <div class="li-stem">${esc(q.stem)}</div>
+      <div class="li-ans">正确答案 <b>${q.answer.split("").join(" ")}</b></div>
+      <div class="pv-opts" hidden>${q.options.map((t, i) => {
+        const k = LETTERS[i], on = q.answer.includes(k);
+        return `<div class="pv-opt ${on ? "ok" : ""}"><span class="k">${k}</span><span>${esc(t)}</span></div>`;
+      }).join("")}</div>
+    </div>`;
+}
+function bindPreview(root){
+  $$(root + " .list-item").forEach(el => {
+    el.onclick = () => {
+      el.classList.toggle("open");
+      const pv = el.querySelector(".pv-opts");
+      if(pv) pv.hidden = !el.classList.contains("open");
+    };
+  });
+}
+
+function renderWrong(){
+  const ids = Object.keys(WRONG).filter(id => byId.has(id))
+    .sort((a, b) => (WRONG[b].t || 0) - (WRONG[a].t || 0));
+  $("#wbSub").textContent = `共 ${ids.length} 题`;
+  const body = $("#wrongBody");
+  if(!ids.length){
+    body.innerHTML = `<div class="empty"><span class="big">✦</span>暂无错题，继续保持</div>`;
+    return;
+  }
+  body.innerHTML = `
+    <div class="qa wrap" style="margin:16px 0 6px">
+      <button class="btn primary" id="wbPractice">练习全部错题 (${ids.length})</button>
+      <span class="spacer"></span>
+      <button class="btn ghost" id="wbClear">清空</button>
+    </div>
+    <div class="card" style="margin-top:10px">
+      <h3 class="card-t">共 ${ids.length} 题 <span style="font-weight:400;font-size:12px;color:var(--muted)">（点击题目展开选项，答对后自动移出）</span></h3>
+      ${ids.map(id => {
+        const q = byId.get(id);
+        return qPreviewHTML(q, `<span class="tag" style="color:var(--bad);border-color:var(--bad-line)">错 ${WRONG[id].n || 1} 次</span>`);
+      }).join("")}
+    </div>`;
+  $("#wbPractice").onclick = () => startSession({mode:"wrong", ids, label:"错题本"});
+  $("#wbClear").onclick = () => {
+    if(!confirm("确定清空错题本？")) return;
+    WRONG = {}; LS.set(K.wrong, WRONG); renderWrong(); toast("已清空错题本");
+  };
+  bindPreview("#wrongBody");
+}
+
+function renderFav(){
+  const ids = FAV.slice();
+  $("#fvSub").textContent = `共 ${ids.length} 题`;
+  const body = $("#favBody");
+  if(!ids.length){
+    body.innerHTML = `<div class="empty"><span class="big">☆</span>还没有收藏题目<br><span style="font-size:12px">答题时点击右上角星标即可收藏</span></div>`;
+    return;
+  }
+  body.innerHTML = `
+    <div class="qa wrap" style="margin:16px 0 6px">
+      <button class="btn primary" id="fvPractice">练习全部收藏 (${ids.length})</button>
+      <span class="spacer"></span>
+      <button class="btn ghost" id="fvClear">清空</button>
+    </div>
+    <div class="card" style="margin-top:10px">
+      <h3 class="card-t">共 ${ids.length} 题 <span style="font-weight:400;font-size:12px;color:var(--muted)">（点击题目展开选项）</span></h3>
+      ${ids.map(id => qPreviewHTML(byId.get(id), "")).join("")}
+    </div>`;
+  $("#fvPractice").onclick = () => startSession({mode:"fav", ids, label:"收藏题目"});
+  $("#fvClear").onclick = () => {
+    if(!confirm("确定清空收藏夹？")) return;
+    FAV = []; LS.set(K.fav, FAV); renderFav(); toast("已清空收藏夹");
+  };
+  bindPreview("#favBody");
+}
+
+/* ================= 事件绑定 ================= */
+
+/* ================= 主观题（背诵看答案，无自评） ================= */
+let SJSEEN = LS.get("mg_subj_seen_v1", []);
+let SJ = null;
+let homeKind = LS.get("mg_kind_v1", "choice");
+
+function sjKey(it){ return it.paper + it.n; }
+function sjItems(paper){
+  return SUBJ[paper].map((it, i) => ({paper, n: i + 1, q: it.q, a: it.a}));
+}
+function renderSubjHome(){
+  const seenA = SJSEEN.filter(k => k[0] === "A").length;
+  const seenB = SJSEEN.filter(k => k[0] === "B").length;
+  const total = seenA + seenB;
+  $("#sjSeenN").textContent = total;
+  $("#sjProgN").textContent = Math.round(total / 14 * 100) + "%";
+  $("#sjBar").style.width = (total / 14 * 100) + "%";
+  $("#sjSubA").textContent = "共 7 题 · 已看 " + seenA + " 题";
+  $("#sjSubB").textContent = "共 7 题 · 已看 " + seenB + " 题";
+}
+function setKind(kind){
+  homeKind = kind;
+  LS.set("mg_kind_v1", kind);
+  $$("#kindSeg button").forEach(b => b.classList.toggle("on", b.dataset.kind === kind));
+  const isSubj = kind === "subj";
+  ["#screen-home > .stats", "#resumeBox", "#screen-home > .modes", "#screen-home > .settings", "#screen-home > .quick"]
+    .forEach(sel => $$(sel).forEach(el => { el.style.display = isSubj ? "none" : ""; }));
+  $("#subjHome").style.display = isSubj ? "" : "none";
+  $("#heroTitle").textContent = isSubj ? "主观题背诵" : "选择题刷题";
+  $("#footNote").textContent = isSubj
+    ? "题库来源：主观题背诵汇总（A/B卷）.docx ｜ 记录仅保存在本机浏览器"
+    : "题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D6";
+  if(isSubj){
+    $("#heroMeta").textContent = "问答题背诵汇总 · A 卷 7 题 · B 卷 7 题 · 共 14 题";
+    renderSubjHome();
+  } else {
+    renderHome();
+  }
+}
+function startSubj(mode){
+  let queue, label;
+  if(mode === "R"){
+    queue = shuffle([...sjItems("A卷"), ...sjItems("B卷")]);
+    label = "随机抽背";
+  } else {
+    queue = sjItems(mode);
+    label = mode + "背诵";
+  }
+  SJ = {label, queue, i: 0, rev: {}};
+  armReveal();
+  showScreen("subj");
+  renderSubj();
+}
+function sjFinish(){
+  SJ = null;
+  showScreen("home");
+  renderSubjHome();
+  toast("本组已背完");
+}
+function renderSubj(){
+  if(!SJ) return;
+  const it = SJ.queue[SJ.i], total = SJ.queue.length, key = sjKey(it);
+  const revealed = !!SJ.rev[key];
+  $("#sjLabel").textContent = SJ.label;
+  $("#sjProgress").textContent = (SJ.i + 1) + " / " + total;
+  $("#sjBarFill").style.width = ((SJ.i + 1) / total * 100) + "%";
+  let ans = "";
+  if(revealed){
+    if(it.a.length === 1){
+      ans = `<div class="sj-points"><div class="sj-point plain">${esc(it.a[0])}</div></div>`;
+    } else {
+      ans = `<div class="sj-points">` + it.a.map((p, i) =>
+        `<div class="sj-point" style="animation-delay:${i * 70}ms"><span class="no">${i + 1}</span><span>${esc(p)}</span></div>`).join("") + `</div>`;
+    }
+  }
+  const last = SJ.i === total - 1;
+  const actions = revealed
+    ? `<button class="btn ghost" data-sj="prev" ${SJ.i === 0 ? "disabled" : ""}>← 上一题</button>
+       <span class="spacer"></span>
+       <button class="btn primary" data-sj="next">${last ? "完成背诵" : "下一题 →"}</button>`
+    : `<button class="btn ghost" data-sj="prev" ${SJ.i === 0 ? "disabled" : ""}>← 上一题</button>
+       <span class="spacer"></span>
+       <button class="btn primary" data-sj="reveal">查看参考答案</button>`;
+  $("#subjBody").innerHTML = `
+    <div class="qcard">
+      <div class="qmeta">
+        <span class="tagnum">${esc(it.paper)} · 第 ${it.n} 题</span>
+        <span class="tag">问答题</span>
+        <span class="hint-inline">${revealed ? "参考答案 · 对照一下自己默答的要点" : "先在心里默答，再点开答案"}</span>
+      </div>
+      <p class="qstem">${esc(it.q)}</p>
+      ${ans}
+      <div class="qa">${actions}</div>
+    </div>`;
+  const card = $("#subjBody .qcard");
+  if(card) card.scrollTop = 0;
+}
+function sjGo(i){
+  if(!SJ) return;
+  SJ.i = Math.max(0, Math.min(SJ.queue.length - 1, i));
+  renderSubj();
+}
+function sjReveal(){
+  if(!SJ) return;
+  const key = sjKey(SJ.queue[SJ.i]);
+  SJ.rev[key] = true;
+  if(!SJSEEN.includes(key)){
+    SJSEEN.push(key);
+    LS.set("mg_subj_seen_v1", SJSEEN);
+  }
+  renderSubj();
+}
+function sjNext(){
+  if(!SJ) return;
+  if(SJ.i >= SJ.queue.length - 1) sjFinish();
+  else sjGo(SJ.i + 1);
+}
+function openSjPalette(){
+  if(!SJ) return;
+  $("#sjGrid").innerHTML = SJ.queue.map((it, i) => {
+    const seen = SJSEEN.includes(sjKey(it)) || SJ.rev[sjKey(it)];
+    return `<button class="pcell ${seen ? "seen" : ""} ${i === SJ.i ? "cur" : ""}" data-sji="${i}">${it.paper[0]}${it.n}</button>`;
+  }).join("");
+  $("#sjPalette").classList.add("on");
+  const cur = $("#sjGrid .pcell.cur");
+  if(cur) cur.scrollIntoView({block: "nearest"});
+}
+function closeSjPalette(){ $("#sjPalette").classList.remove("on"); }
+
+function bindEvents(){
+  $$("[data-theme-toggle]").forEach(b => b.onclick = toggleTheme);
+
+  syncVH();
+  window.addEventListener("resize", syncVH);
+  window.addEventListener("orientationchange", syncVH);
+  if(window.visualViewport) window.visualViewport.addEventListener("resize", syncVH);
+
+  $("#modeChapter").onclick = () => { armReveal(); renderChapters(); showScreen("chapters"); };
+  $("#modeMixed").onclick = () => startSession({mode:"mixed", label:"混合练习"});
+  $("#modeMemo").onclick = () => startSession({mode:"memo", memo:true, label:"背题模式"});
+
+  $$("#settings .chip").forEach(c => c.onclick = () => setCfg(c.dataset.k, c.dataset.v));
+
+  $("#goWrong").onclick = () => { renderWrong(); showScreen("wrong"); };
+  $("#goFav").onclick = () => { renderFav(); showScreen("fav"); };
+  $("#resetAll").onclick = () => {
+    if(!confirm("将清空所有做题记录、错题本和收藏，确定吗？")) return;
+    STATS = {}; WRONG = {}; FAV = []; S = null;
+    LS.set(K.stats, STATS); LS.set(K.wrong, WRONG); LS.set(K.fav, FAV);
+    try{ localStorage.removeItem(K.sess); }catch(e){}
+    renderHome(); toast("已重置全部记录");
+  };
+
+  $("#chBack").onclick = () => { showScreen("home"); renderHome(); };
+  $("#qzBack").onclick = () => {
+    saveSession();
+    if(S){ S.elapsed = elapsedSec(); S.stamp = Date.now(); }
+    clearInterval(tick);
+    showScreen("home"); renderHome();
+  };
+  $("#qzPalette").onclick = openPalette;
+  $("#rsHome").onclick = () => { showScreen("home"); renderHome(); };
+  $("#wbBack").onclick = () => { showScreen("home"); renderHome(); };
+  $("#fvBack").onclick = () => { showScreen("home"); renderHome(); };
+
+  $("#palette").addEventListener("click", e => {
+    if(e.target.closest("[data-close]")) return closePalette();
+    const cell = e.target.closest(".pcell");
+    if(cell){ closePalette(); go(Number(cell.dataset.i)); }
+  });
+
+  /* 背题模式：左右滑动翻题 */
+  (function(){
+    const zone = $("#quizBody");
+    if(!zone) return;
+    let sw = null;
+    const TH = 64;
+    function reset(card){
+      card.style.transform = "";
+      card.style.opacity = "";
+    }
+    function springBack(card){
+      if(RM() || !card.animate){ reset(card); return; }
+      const cur = card.style.transform, op = card.style.opacity;
+      const a = card.animate([
+        {transform: cur || "translateX(0px)", opacity: op || "1"},
+        {transform: "translateX(0px)", opacity: "1"}
+      ], {duration: 240, easing: "cubic-bezier(.34,1.35,.64,1)"});
+      a.onfinish = () => reset(card);
+      a.oncancel = () => reset(card);
+    }
+    function slideOut(card, dir, after){
+      if(RM() || !card.animate){ after(); return; }
+      const a = card.animate([
+        {transform: card.style.transform || "translateX(0px)", opacity: card.style.opacity || "1"},
+        {transform: `translateX(${dir * 55}%)`, opacity: "0"}
+      ], {duration: 160, easing: "cubic-bezier(.5,0,.8,.4)", fill: "forwards"});
+      a.onfinish = after;
+      a.oncancel = after;
+    }
+    function enterFrom(dir){
+      if(RM()) return;
+      const card = $("#quizBody .qcard");
+      if(!card || !card.animate) return;
+      card.animate([
+        {transform: `translateX(${dir * 44}px)`, opacity: "0"},
+        {transform: "translateX(0px)", opacity: "1"}
+      ], {duration: 210, easing: "cubic-bezier(.22,.9,.3,1)"});
+    }
+    zone.addEventListener("pointerdown", e => {
+      sw = null;
+      if(!S || !S.memo) return;
+      if(e.target.closest("[data-act]")) return;
+      const card = e.target.closest(".qcard");
+      if(!card) return;
+      sw = {x: e.clientX, y: e.clientY, card, dx: 0, active: false};
+    });
+    window.addEventListener("pointermove", e => {
+      if(!sw) return;
+      const dx = e.clientX - sw.x, dy = e.clientY - sw.y;
+      if(!sw.active){
+        if(Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.3) sw.active = true;
+        else if(Math.abs(dy) > 12){ sw = null; return; }
+        else return;
+      }
+      sw.dx = dx;
+      sw.card.style.transform = `translateX(${dx * 0.55}px)`;
+      sw.card.style.opacity = String(1 - Math.min(0.35, Math.abs(dx) / 500));
+    }, {passive: true});
+    function endSwipe(){
+      if(!sw) return;
+      const s = sw; sw = null;
+      if(!s.active) return;
+      const card = s.card;
+      if(s.dx <= -TH){
+        if(S.idx >= S.queue.length - 1) slideOut(card, -1, memoFinish);
+        else slideOut(card, -1, () => { go(S.idx + 1); enterFrom(1); });
+      } else if(s.dx >= TH){
+        if(S.idx <= 0) springBack(card);
+        else slideOut(card, 1, () => { go(S.idx - 1); enterFrom(-1); });
+      } else springBack(card);
+    }
+    window.addEventListener("pointerup", endSwipe);
+    window.addEventListener("pointercancel", () => {
+      if(sw && sw.active) springBack(sw.card);
+      sw = null;
+    });
+  })();
+
+  document.addEventListener("keydown", e => {
+    const t = e.target;
+    if(t && typeof t.matches === "function" && t.matches("input,textarea")) return;
+    if($("#palette").classList.contains("on")){
+      if(e.key === "Escape") closePalette();
+      return;
+    }
+    if(!$("#screen-quiz").classList.contains("active")) return;
+    const q = curQ();
+    const k = e.key.toUpperCase();
+    let idx = -1;
+    if(k.length === 1 && k >= "A" && k <= "E") idx = k.charCodeAt(0) - 65;
+    else if(k >= "1" && k <= "5") idx = Number(k) - 1;
+    if(idx >= 0 && idx < q.options.length){
+      e.preventDefault();
+      const ord2 = (S.optOrder && S.optOrder[q.id]) || q.options.map((_, i) => i);
+      toggleOpt(LETTERS[ord2[idx]]);
+      return;
+    }
+    if(e.key === "Enter"){
+      e.preventDefault();
+      if(S.memo){
+        if(S.idx >= S.queue.length - 1) memoFinish();
+        else go(S.idx + 1);
+        return;
+      }
+      const r = S.rec[q.id];
+      if(r && r.submitted) next();
+      else if(r && r.sel.length) submitCurrent();
+      return;
+    }
+    if(e.key === "ArrowRight"){
+      e.preventDefault();
+      if(S.memo && S.idx >= S.queue.length - 1) memoFinish();
+      else next();
+    }
+    else if(e.key === "ArrowLeft"){ e.preventDefault(); go(S.idx - 1); }
+  });
+
+  /* 主观题入口与背诵屏 */
+  $$("#kindSeg button").forEach(b => { b.onclick = () => setKind(b.dataset.kind); });
+  $("#sjPaperA").onclick = () => startSubj("A卷");
+  $("#sjPaperB").onclick = () => startSubj("B卷");
+  $("#sjRandom").onclick = () => startSubj("R");
+  $("#sjBack").onclick = () => { SJ = null; showScreen("home"); };
+  $("#sjPalBtn").onclick = openSjPalette;
+  $("#sjPalette").addEventListener("click", e => {
+    if(e.target.closest("[data-sjclose]")){ closeSjPalette(); return; }
+    const cell = e.target.closest("[data-sji]");
+    if(cell && SJ){ closeSjPalette(); sjGo(parseInt(cell.dataset.sji, 10)); }
+  });
+  $("#subjBody").addEventListener("click", e => {
+    const b = e.target.closest("[data-sj]");
+    if(!b || !SJ) return;
+    const a = b.dataset.sj;
+    if(a === "prev") sjGo(SJ.i - 1);
+    else if(a === "reveal") sjReveal();
+    else if(a === "next") sjNext();
+  });
+  document.addEventListener("keydown", e => {
+    if(!$("#screen-subj").classList.contains("active") || !SJ) return;
+    if(e.key === "ArrowLeft"){ e.preventDefault(); sjGo(SJ.i - 1); }
+    else if(e.key === "ArrowRight"){ e.preventDefault(); sjNext(); }
+    else if(e.key === "Enter"){
+      e.preventDefault();
+      if(SJ.rev[sjKey(SJ.queue[SJ.i])]) sjNext(); else sjReveal();
+    }
+  });
+  /* 主观题：左右滑动翻题 */
+  (function(){
+    const zone = $("#subjBody");
+    if(!zone) return;
+    let sw = null;
+    const TH = 64;
+    function reset(card){ card.style.transform = ""; card.style.opacity = ""; }
+    function springBack(card){
+      if(RM() || !card.animate){ reset(card); return; }
+      const a = card.animate([
+        {transform: card.style.transform || "translateX(0px)", opacity: card.style.opacity || "1"},
+        {transform: "translateX(0px)", opacity: "1"}
+      ], {duration: 240, easing: "cubic-bezier(.34,1.35,.64,1)"});
+      a.onfinish = () => reset(card); a.oncancel = () => reset(card);
+    }
+    function slideOut(card, dir, after){
+      if(RM() || !card.animate){ after(); return; }
+      const a = card.animate([
+        {transform: card.style.transform || "translateX(0px)", opacity: card.style.opacity || "1"},
+        {transform: `translateX(${dir * 55}%)`, opacity: "0"}
+      ], {duration: 160, easing: "cubic-bezier(.5,0,.8,.4)", fill: "forwards"});
+      a.onfinish = after; a.oncancel = after;
+    }
+    function enterFrom(dir){
+      if(RM()) return;
+      const card = $("#subjBody .qcard");
+      if(!card || !card.animate) return;
+      card.animate([
+        {transform: `translateX(${dir * 44}px)`, opacity: "0"},
+        {transform: "translateX(0px)", opacity: "1"}
+      ], {duration: 210, easing: "cubic-bezier(.22,.9,.3,1)"});
+    }
+    zone.addEventListener("pointerdown", e => {
+      sw = null;
+      if(!SJ) return;
+      if(e.target.closest("[data-sj]")) return;
+      const card = e.target.closest(".qcard");
+      if(!card) return;
+      sw = {x: e.clientX, y: e.clientY, card, dx: 0, active: false};
+    });
+    window.addEventListener("pointermove", e => {
+      if(!sw) return;
+      const dx = e.clientX - sw.x, dy = e.clientY - sw.y;
+      if(!sw.active){
+        if(Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.3) sw.active = true;
+        else if(Math.abs(dy) > 12){ sw = null; return; }
+        else return;
+      }
+      sw.dx = dx;
+      sw.card.style.transform = `translateX(${dx * 0.55}px)`;
+      sw.card.style.opacity = String(1 - Math.min(0.35, Math.abs(dx) / 500));
+    }, {passive: true});
+    function endSwipe(){
+      if(!sw) return;
+      const s = sw; sw = null;
+      if(!s.active || !SJ) return;
+      const card = s.card;
+      if(s.dx <= -TH){
+        slideOut(card, -1, () => { if(SJ){ if(SJ.i >= SJ.queue.length - 1) sjFinish(); else { sjGo(SJ.i + 1); enterFrom(1); } } });
+      } else if(s.dx >= TH){
+        if(SJ.i <= 0) springBack(card);
+        else slideOut(card, 1, () => { sjGo(SJ.i - 1); enterFrom(-1); });
+      } else springBack(card);
+    }
+    window.addEventListener("pointerup", endSwipe);
+    window.addEventListener("pointercancel", () => { if(sw && sw.active) springBack(sw.card); sw = null; });
+  })();
+}
+
+/* ================= 启动 ================= */
+applyTheme();
+syncChips();
+renderHome();
+bindEvents();
+setKind(homeKind);
+</script>
+</body>
+</html>
