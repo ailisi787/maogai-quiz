@@ -528,7 +528,7 @@ document.addEventListener("DOMContentLoaded", __showErr);
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
         </div>
         <h3>大会时间线专练</h3>
-        <p>按党的历次大会顺序排列 · 共 29 题<br>专治“第几次大会提了什么”混乱</p>
+        <p>按党的历次大会顺序排列 · 共 23 题<br>专治“第几次大会提了什么”混乱</p>
         <span class="arrow">→</span>
       </button>
     </div>
@@ -614,7 +614,7 @@ document.addEventListener("DOMContentLoaded", __showErr);
       <p class="hint">先在心里默答，再点开参考答案对照 · 支持左右滑动翻题</p>
     </div>
 
-    <p class="foot" id="footNote">题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D8</p>
+    <p class="foot" id="footNote">题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D9</p>
   </section>
 
   <!-- ============ CHAPTERS ============ -->
@@ -1062,7 +1062,7 @@ function saveSession(){
 }
 
 /* 大会时间线专练：按党的历次大会/全会时间顺序排列的专治“第几次大会”混淆题单 */
-const TIMELINE = ["12","7","113","91","110","84","117","114","153","118","138","136","133","119","137","146","142","156","122","139","141","180","124","154","125","169","126","127","128"];
+const TIMELINE = ["7","91","110","117","114","153","118","138","136","133","119","137","146","156","122","139","141","180","125","169","126","127","128"];
 function startSession(opts){
   let pool;
   if(opts.ids) pool = opts.ids.map(id => byId.get(id)).filter(Boolean);
@@ -1568,7 +1568,7 @@ function setKind(kind){
   $("#heroTitle").textContent = isSubj ? "主观题背诵" : "选择题刷题";
   $("#footNote").textContent = isSubj
     ? "题库来源：主观题背诵汇总（A/B卷）.docx ｜ 记录仅保存在本机浏览器"
-    : "题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D8";
+    : "题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D9";
   if(isSubj){
     $("#heroMeta").textContent = "问答题背诵汇总 · A 卷 7 题 · B 卷 7 题 · 共 14 题";
     renderSubjHome();
