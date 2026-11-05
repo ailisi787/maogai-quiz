@@ -539,7 +539,7 @@ document.addEventListener("DOMContentLoaded", __showErr);
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>
         </div>
         <h3>概念要点专练</h3>
-        <p>主线 · 路线 · 原则 · 本质 · 核心类提法 · 共 46 题<br>专治“问的是一个东西的什么”混乱</p>
+        <p>“三个代表”三连 + 科学发展观六连 · 共 9 题<br>专治“问的是一个东西的什么”混乱</p>
         <span class="arrow">→</span>
       </button>
     </div>
@@ -625,7 +625,7 @@ document.addEventListener("DOMContentLoaded", __showErr);
       <p class="hint">先在心里默答，再点开参考答案对照 · 支持左右滑动翻题</p>
     </div>
 
-    <p class="foot" id="footNote">题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D11</p>
+    <p class="foot" id="footNote">题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D12</p>
   </section>
 
   <!-- ============ CHAPTERS ============ -->
@@ -1075,7 +1075,7 @@ function saveSession(){
 /* 大会时间线专练：按党的历次大会/全会时间顺序排列的专治“第几次大会”混淆题单 */
 const TIMELINE = ["7","91","110","117","114","153","118","138","136","133","119","137","146","156","122","139","141","180","125","169","126","127","128"];
 /* 概念要点专练：主线/路线/原则/方针/本质/核心/灵魂等定性提法题，按章节与理论体系顺序 */
-const CONCEPTS = ["13","14","16","46","47","48","55","59","60","64","73","75","78","88","99","102","105","110","111","117","119","132","143","149","152","157","158","159","163","164","170","171","174","175","182","186","187","188","189","190","193","194","196","198","199","200"];
+const CONCEPTS = ["157","158","159","193","194","196","198","199","200"];
 function startSession(opts){
   let pool;
   if(opts.ids) pool = opts.ids.map(id => byId.get(id)).filter(Boolean);
@@ -1581,7 +1581,7 @@ function setKind(kind){
   $("#heroTitle").textContent = isSubj ? "主观题背诵" : "选择题刷题";
   $("#footNote").textContent = isSubj
     ? "题库来源：主观题背诵汇总（A/B卷）.docx ｜ 记录仅保存在本机浏览器"
-    : "题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D11";
+    : "题库来源：毛概题库.docx ｜ 记录仅保存在本机浏览器 ｜ 版本 D12";
   if(isSubj){
     $("#heroMeta").textContent = "问答题背诵汇总 · A 卷 7 题 · B 卷 7 题 · 共 14 题";
     renderSubjHome();
